@@ -1,0 +1,10 @@
+# VSCode specific
+.vscode
+
+# Python specific:
+**/__pycache__
+.venv
+
+# Flask specific:
+**/instance
+**/.webassets-cache

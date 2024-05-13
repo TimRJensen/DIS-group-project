@@ -1,0 +1,53 @@
+name: dis
+services:
+  postgres:
+    container_name: ${DB}
+    image: postgres:latest
+    env_file: .env 
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+      - backups:/backups
+      - ./schema/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5454:${POSTGRES_PORT}"
+    networks:
+      - back-end
+
+  web:
+    container_name: ${WEB}
+    build:
+      context: .
+      dockerfile: .docker/flask.Dockerfile
+    env_file: .env 
+    ports:
+      - "${FLASK_RUN_PORT}:${FLASK_RUN_PORT}"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /src
+        - action: rebuild
+          path: requirements.txt
+    stop_signal: SIGINT
+    networks:
+      - back-end
+    depends_on:
+      - ${DB}
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    restart: always
+    env_file: .env
+    ports:
+      - "5050:80"
+    networks:
+      - back-end
+
+volumes:
+  data:
+  backups:
+
+networks:
+  back-end:
