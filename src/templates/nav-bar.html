@@ -1,0 +1,45 @@
+{% set text = config["locale"]["navbar"] %}
+<section class="nav-bar">
+    <div class="linkbox">
+        <a class="link">{{text["0"]}}</a>
+        <a class="link">{{text["1"]}}</a>
+        <a class="link">{{text["2"]}}</a>
+    </div>
+
+    <div class="controlbox">
+        <form class="form">
+            <input type="text" />
+        </form>
+        <div class="locales" tabindex="-1">
+            {% for locale in config["locales"] %}
+                <a class="link" href="{{'/locale/' ~ locale}}" >{{locale}}</a>
+            {% endfor %}
+        </div>
+        <button class="material-symbols-outlined button">search</button>
+        <button class="button">{{config["locale"]["name"]}}</button>
+    </div>
+</section>
+
+<script>
+    let searchbox = document.querySelector(".controlbox");
+    let children = Array.from(searchbox.children);
+
+    for (let i = 0; i < 2; i++) {
+        children[i].addEventListener("blur", (e) => {
+            if (!e.relatedTarget || children[i] != e.relatedTarget.parentElement) {
+                children[i+2].dataset["toggled"] = children[i].dataset["toggled"]= "";
+            }
+        }, true);
+        children[i+2].addEventListener("pointerdown", (e) => {
+            e.preventDefault();
+
+            if (children[i+2].dataset["toggled"]) {
+                children[i].firstElementChild.blur()
+                return;
+            }
+
+            children[i+2].dataset["toggled"] = children[i].dataset["toggled"]= "true";
+            children[i].firstElementChild.focus();
+        });
+    }
+</script>
