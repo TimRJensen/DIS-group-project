@@ -4,11 +4,12 @@ WORKDIR /src
 
 # Project files
 COPY requirements.txt /src
+COPY .env /src
 COPY ./src /src
 
 # Project dependencies
 RUN pip install --upgrade pip \
     pip install -r requirements.txt
 
-# Run
+# Run 
 CMD ["flask", "run"]

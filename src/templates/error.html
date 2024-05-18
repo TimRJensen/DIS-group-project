@@ -1,0 +1,14 @@
+{% extends "base.html" %} 
+{% block title %}
+<title>{{code}}</title>
+{% endblock title %} 
+{% block head %} {% endblock %}
+{% block content %} 
+{% set text = config["locale"]["views"]["error"] %}
+<section id="error" class="view">
+    <div>¯\_(ツ)_/¯</div>
+    <div>
+        {{text[code]}}. {{text["0"]}} <a href="/">{{text["1"]}}</a>?
+    </div>
+</section>
+{% endblock %}

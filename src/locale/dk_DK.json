@@ -1,0 +1,23 @@
+{
+    "id": "dk_DK",
+    "name": "DK",
+    "views": {
+        "error": {
+            "0": "Vend tilbage til",
+            "1": "forsiden",
+            "404": "Ingenting her"
+        },
+        "/": {}
+    },
+    "navbar": {
+        "0": "Hold",
+        "1": "Grupper",
+        "2": "Kampe"
+    },
+    "counter": {
+        "0": "dage",
+        "1": "timer",
+        "2": "minutter",
+        "3": "sekunder"
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "id": "en_EN",
+    "name": "EN",
+    "views": {
+        "error": {
+            "0": "Return to the",
+            "1": "frontpage",
+            "404": "Nothing here"
+        },
+        "/": {}
+    },
+    "navbar": {
+        "0": "Teams",
+        "1": "Groups",
+        "2": "Matches"
+    },
+    "counter": {
+        "0": "days",
+        "1": "hours",
+        "2": "minutes",
+        "3": "seconds"
+    }
+}

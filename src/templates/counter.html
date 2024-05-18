@@ -1,0 +1,105 @@
+{% set text = config["locale"]["counter"] %}
+<div id="counter" >
+    <div class="digits">
+        <div class="digit" data-now data-next data-animate>
+        </div>
+        <div class="digit">
+        </div>
+        <div class="digit">
+        </div>
+    </div>
+    <span>{{text["0"]}}</span>
+    <div class="digits">
+        <div class="digit" data-now="0" data-next="2" data-animate>
+        </div>
+        <div class="digit" data-now="0" data-next="3" data-animate>
+        </div>
+    </div>
+    <span>{{text["1"]}}</span>
+    <div class="digits">
+        <div class="digit" data-now="0" data-next="5" data-animate>
+        </div>
+        <div class="digit" data-now="0" data-next="9" data-animate>
+        </div>
+    </div>
+    <span>{{text["2"]}}</span>
+    <div class="digits">
+        <div class="digit" data-now="0" data-next="5" data-animate>
+        </div>
+        <div class="digit" data-now="0" data-next="9" data-animate>
+        </div>
+    </div>
+    <span>{{text["3"]}}</span>
+</div> 
+
+<script>(function(){
+    const now = new Date()
+    const start = new Date("21 Jun, 2024 21:00:00 GMT+0200")
+    const remainder = new Date(start - now)
+    const mss = [31536000000, 86400000, 3600000, 60000, 1000]
+    const digits = document.querySelectorAll(".digits")
+    
+    function animationdEnd(e, i) {
+        const digits = e.currentTarget
+        const ms = remainder.getTime()
+        
+        for (let j = digits.childElementCount - 1, k = 0; j >= 0; j--, k++) {
+            const digit = digits.children[j]
+            const count = Math.floor(ms%mss[i]/(mss[i+1]*10**k))%10
+    
+            if (digit == e.target) {
+                digit.dataset["now"] = count
+                digit.dataset["next"] = count > 0 ? count - 1 : 0
+                digit.dataset["animate"] = false
+                break
+            }
+        }
+    }
+    
+    function intervalFunc() {
+        const ms = remainder.setMilliseconds(remainder.getMilliseconds() - 1000)
+    
+        if (ms < 0) {
+            clearInterval(timer)
+            return
+        }
+    
+        for (let i = 0; i < digits.length; i++) {
+            for (let j = digits[i].childElementCount - 1, k = 0; j >= 0; j--, k++) {
+                const digit = digits[i].children[j]
+                const count = Math.floor(ms%mss[i]/(mss[i+1]*10**k))%10
+    
+                digit.dataset["animate"] = count != digit.dataset["now"] 
+                digit.dataset["next"] = count 
+            }
+        }
+    }
+    
+    const ms = remainder.getTime()
+    
+    for (let i = 0; i < digits.length; i++) {
+        for (let j = digits[i].childElementCount - 1, k = 0; j >= 0; j--, k++) {
+            const digit = digits[i].children[j]
+            const count = Math.floor(ms%mss[i]/(mss[i+1]*10**k))%10
+    
+            digit.dataset["now"] = count
+            digit.dataset["next"] = 0
+        }
+    
+        digits[i].addEventListener("animationend", (e) => animationdEnd(e, i), true)
+    }
+    
+    for (let i = 0; i < digits[0].childElementCount; i++) {
+        const digit = digits[0].children[i]
+    
+        if (digit.dataset["now"] == 0 && digit != digits[0].lastElementChild) {
+            digit.remove()
+        }
+    }
+    
+    let timer = setTimeout(() => {
+        intervalFunc()
+        timer = setInterval(intervalFunc, 1000)
+    }, remainder.getMilliseconds()%1000)
+    })()    
+</script>
