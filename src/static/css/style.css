@@ -1,5 +1,7 @@
 /* Google stuff */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=Teko:wght@300..700&display=swap');
+
 
 .material-symbols-outlined {
     font-variation-settings:
@@ -224,4 +226,53 @@ body {
 #error.view  > *:first-child {
     font-size: 4rem;
     text-align: center;
+}
+
+/* Fixtures specifics */
+.fixture-box {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 1rem;
+    color: #000000; /* vs */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fixture-box h3 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.fixture-box p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.fixture-box .teams {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.fixture-box .venue,
+.fixture-box .date {
+    font-size: 0.9rem;
+    color: #000000;
+}
+
+.home-team {
+    color: #1E90FF;
+}
+
+.away-team {
+    color: #FF4500;
 }

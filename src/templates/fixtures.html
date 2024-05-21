@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Fixtures - UEFA EURO 2024</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <h1>Fixtures</h1>
+    {% for fixture in fixtures %}
+        <div class="fixture-box">
+            <div class="teams">
+                <h3 class="home-team">{{ fixture.home_id }}</h3>
+                <span>vs</span>
+                <h3 class="away-team">{{ fixture.away_id }}</h3>
+            </div>
+            <p class="date">{{ fixture.date }}</p>
+            <p class="venue">{{ fixture.venue }}</p>
+        </div>
+    {% endfor %}
+</main>
+{% endblock %}
