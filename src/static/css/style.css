@@ -1,0 +1,227 @@
+/* Google stuff */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+/* Standard styles */
+:root {
+    font-family: "Roboto", sans-serif;
+    --color-primary: #9BCF53;    
+    --color-primary-light: #BFEA7C;    
+    --color-primary-dark: #416D19;    
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+a, a:visited {
+    color: #0000EE;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Header specifics */
+#header {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 256px;
+    background-color: var(--color-primary);
+    color: white;
+}
+
+/* Navbar specifics */
+#nav-bar {
+    position: sticky;
+    display: grid;
+    grid-template: 
+        "none  links controls"
+        / 1fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+    width: 100%;
+    height: 64px;
+    top: 10px;
+    padding-right: 20px;
+    background-color: var(--color-primary-dark);
+    color: white;
+}
+
+#nav-bar .linkbox {
+    grid-area: links;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    height: inherit;
+    line-height: 64px;
+}
+
+.linkbox .link {
+    display: block;
+    width: 100px;
+    text-align: center;
+    background-color: transparent;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#nav-bar .controlbox {
+    grid-area: controls;
+    place-self: end;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    height: inherit;
+    gap: 10px;
+}
+
+.linkbox .link:hover, .controlbox .button:hover {
+    background-color: var(--color-primary);
+}
+
+.controlbox .form {
+    visibility: hidden;
+    width: 0;
+    z-index: -10;
+}
+
+.controlbox .form input {
+    height: 32px;
+    width: inherit;
+    border: none;
+    border-radius: 5px;
+    padding-left: 6px;
+    outline: none;
+}
+
+.controlbox .locales {
+    display: flex;
+    visibility: hidden;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    width: 0; 
+    z-index: -10;
+}
+
+.controlbox .form[data-toggled=true],
+.controlbox .locales[data-toggled=true] {
+    visibility: visible;
+    width: 200px; 
+    z-index: 0;
+}
+
+.controlbox .button {
+    min-height: 34px;
+    min-width: 34px;
+    padding: 5px;
+    border: white solid 1.5px;
+    border-radius: 4px;
+    text-align: center;
+    cursor: pointer;
+    background-color: transparent;
+    color: white;
+}
+
+.locales .link {
+    line-height: 34px;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    color: white;
+}
+
+.controlbox .button[data-toggled=true] {
+    background-color:var(--color-primary);
+}
+
+/* Counter specifics*/
+#counter {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: baseline;
+    width: clamp(100px, 100%, max-content);
+    gap: 5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #004f9f;
+}
+
+#counter .digits {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: baseline;
+    overflow-y: hidden;
+}
+
+.digit {
+    --now: "0";
+    --next: "0";
+    display: flex;
+    flex-flow: column;
+    height: 30px;
+    transform: translateY(-100%);
+}
+
+.digit[data-animate="true"] {
+    animation: step linear 0.5s;
+}
+
+.digit::before {
+    content: attr(data-next);
+}
+
+.digit::after {
+    content: attr(data-now);
+}
+
+@keyframes step {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+/* View specifics */
+#view-box {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.view {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px;
+}
+
+#error.view {
+    justify-content: center;
+    align-self: center;
+    font-size: 1.5rem;
+    gap: 10px;
+}
+
+#error.view  > *:first-child {
+    font-size: 4rem;
+    text-align: center;
+}
