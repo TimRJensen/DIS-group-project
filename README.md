@@ -60,7 +60,7 @@ Confirm that the database is running with the following command:
 ```
 docker exec postgres psql -U group77 -d uefa2024 -V
 ```
-Confirm that the Flask server is running by navigating to [localhost:1234](http://localhost:1234?greet=name). Lastly you need an evironment file, which you'll get from me. Place it under scripts/
+Confirm that the Flask server is running by navigating to [localhost:1234](http://localhost:1234?greet=name).
 ### Populating the database
 You should not need this step, but I include it for the sake of completeness.
 ##### Windows:
