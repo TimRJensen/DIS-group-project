@@ -1,9 +1,9 @@
 {% set text = config["locale"]["navbar"] %}
 <section id="nav-bar">
     <div class="linkbox">
-        <a class="link" href="/teams">{{text["0"]}}</a>
-        <a class="link" href="/groups">{{text["1"]}}</a>
-        <a class="link" href="/fixtures">{{text["2"]}}</a>
+        <a class="link" href="/teams">{{text[0]}}</a>
+        <a class="link" href="/groups">{{text[1]}}</a>
+        <a class="link" href="/fixtures">{{text[2]}}</a>
     </div>
     <div class="controlbox">
         <form class="form">
@@ -11,10 +11,10 @@
         </form>
         <div class="locales" tabindex="-1">
             {% for locale in config["locales"] %}
-                {% if locale == config["locale"]["name"] %}
-                    <a class="link" href="/locale/{{locale}}"><strong>{{locale}}</strong></a>
+                {% if locale[1] == config["locale"]["name"] %}
+                    <a class="link" href="/locale/{{locale[0]}}"><strong>{{locale[1]}}</strong></a>
                 {% else %}
-                    <a class="link" href="/locale/{{locale}}" >{{locale}}</a>
+                    <a class="link" href="/locale/{{locale[0]}}" >{{locale[1]}}</a>
                 {% endif %}
             {% endfor %}    
         </div>

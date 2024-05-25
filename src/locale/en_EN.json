@@ -7,7 +7,8 @@
             "1": "frontpage",
             "404": "Nothing here"
         },
-        "/": {}
+        "/": {
+        }
     },
     "navbar": {
         "0": "Teams",

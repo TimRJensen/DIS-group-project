@@ -2,6 +2,7 @@ import os, json
 from re import match
 from flask import Flask, redirect, request
 from psycopg import Connection
+from psycopg.rows import dict_row
 from dotenv import load_dotenv
 
 locale = None
@@ -21,22 +22,43 @@ except Exception as e:
 def create_app():
     app = Flask(__name__)
 
-    app.config["locales"] = []
-    for locale in os.listdir("locale"):
-        app.config["locales"].append(match(r"^[a-z]{2}_([A-Z]{2}).json$", locale)[1])
-    with open("locale/en_EN.json", "r") as file:
-        app.config["locale"] = json.load(file)
-
     from src.routes.index import Index
     from src.routes.error import Error
     app.register_blueprint(Index)
     app.register_blueprint(Error)
 
+    locales = []
+    app.config["locales"] = []
+    app.config["locale"] = {}
 
-    @app.get("/locale/<locale>")
-    def set_locale(locale:str):
-        with open(f"locale/{locale.lower()}_{locale}.json", "r") as file: 
-            app.config["locale"] = json.load(file)
-        return redirect(request.referrer)
+    with con.cursor(row_factory=dict_row) as cursor:
+        locales = cursor.execute("SELECT * FROM locales;").fetchall()
+        for key in list(locales[0].keys())[1:]:
+            app.config["locales"].append((key, match(r"^[a-z]{2}_([a-z]{2})", key)[1].upper()))
+    
+    @app.get("/locale/<iso>")
+    def set_locale(iso: str):
+        app.config["locale"]["name"] = match(r"^[a-z]{2}_([a-z]{2})", iso)[1].upper()
+
+        for row in locales:
+            stack = row["id"].split(":")
+            next = stack.pop(0)
+            locale = app.config["locale"]
+            while (len(stack)):
+                if not next in locale:
+                    locale[next] = {}
+                locale = locale[next]
+                next = stack.pop(0)
+            if next.isdigit():
+                locale[int(next)] = row[iso]
+            else:
+                locale[next] = row[iso]
+
+        if request:
+            return redirect(request.referrer)
+
+    set_locale("en_en")
+    print(app.config["locale"])
+
     
     return app

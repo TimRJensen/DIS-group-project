@@ -1,116 +1,160 @@
 {
     "teams": {
-        "name": "Teams",
-        "api_key": "response:team",
+        "name": "teams",
+        "api-key": "response:team",
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "id",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:team:id",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "name",
                 "type": "VARCHAR(64)",
-                "api_key": "name",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:team:name",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": true            
             },
             {
                 "name": "code",
                 "type": "VARCHAR(8)",
-                "api_key": "code",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:team:code",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "logo",
                 "type": "VARCHAR(64)",
-                "api_key": "logo",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:team:logo",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             }
         ]
     },
     "groups": {
-        "name": "Groups",
-        "api_key": "response:league:standings",
+        "name": "groups",
+        "api-key": "response:league:standings",
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "name",
                 "type": "VARCHAR(64)",
-                "api_key": "group",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:league:standings:group",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "team_id",
                 "type": "INT",
-                "api_key": "team:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "response:league:standings:team:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "Teams",
+                "localize": false            
             }
         ]
     },
     "fixtures": {
-        "name": "Fixtures",
-        "api_key": "response",
+        "name": "fixtures",
+        "api-key": "response",
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "fixture:id",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:fixture:id",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "date",
                 "type": "TIMESTAMP",
-                "api_key": "fixture:date",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:fixture:date",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "venue",
                 "type": "VARCHAR(64)",
-                "api_key": "fixture:venue:name",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "response:fixture:venue:name",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
             },
             {
                 "name": "home_id",
                 "type": "INT",
-                "api_key": "teams:home:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "response:teams:home:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "Teams",
+                "localize": false            
             },
             {
                 "name": "away_id",
                 "type": "INT",
-                "api_key": "teams:away:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "response:teams:away:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "Teams",
+                "localize": false            
             }
         ]
-    }
+    },
+    "locales": {
+        "name": "locales",
+        "api-key": "",
+        "cols": [
+            {
+                "name": "id",
+                "type": "VARCHAR(255)",
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
+            },
+            {
+                "name": "en_EN",
+                "type": "VARCHAR(255)",
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
+            },
+            {
+                "name": "da_DK",
+                "type": "VARCHAR(255)",
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false            
+            }
+    ]}
 }
