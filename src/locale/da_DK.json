@@ -9,8 +9,7 @@
         },
         "/": {},
         "groups": {
-            "0": "Grupper",
-            "1": "Gruppe"
+            "0": "Grupper"
         }
     },
     "navbar": {

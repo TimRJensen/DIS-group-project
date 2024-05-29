@@ -47,7 +47,7 @@
             {
                 "name": "group_id",
                 "type": "VARCHAR(64)",
-                "api-key": "groups:team:logo",
+                "api-key": "groups:team:id",
                 "primary-key": false,
                 "foreign-key": "id",
                 "foreign-table": "groups",
