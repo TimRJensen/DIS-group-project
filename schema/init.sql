@@ -16,6 +16,16 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE IF EXISTS ONLY public.fixtures DROP CONSTRAINT IF EXISTS fixtures_home_id_fkey;
+ALTER TABLE IF EXISTS ONLY public.fixtures DROP CONSTRAINT IF EXISTS fixtures_away_id_fkey;
+ALTER TABLE IF EXISTS ONLY public.teams DROP CONSTRAINT IF EXISTS teams_pkey;
+ALTER TABLE IF EXISTS ONLY public.locales DROP CONSTRAINT IF EXISTS locales_pkey;
+ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
+ALTER TABLE IF EXISTS ONLY public.fixtures DROP CONSTRAINT IF EXISTS fixtures_pkey;
+DROP TABLE IF EXISTS public.teams;
+DROP TABLE IF EXISTS public.locales;
+DROP TABLE IF EXISTS public.groups;
+DROP TABLE IF EXISTS public.fixtures;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -41,12 +51,23 @@ ALTER TABLE public.fixtures OWNER TO group77;
 
 CREATE TABLE public.groups (
     id integer NOT NULL,
-    name character varying(64),
-    team_id integer
+    name character varying(64)
 );
 
 
 ALTER TABLE public.groups OWNER TO group77;
+
+--
+-- Name: locales; Type: TABLE; Schema: public; Owner: group77
+--
+
+CREATE TABLE public.locales (
+    id character varying(255) NOT NULL,
+    locale json
+);
+
+
+ALTER TABLE public.locales OWNER TO group77;
 
 --
 -- Name: teams; Type: TABLE; Schema: public; Owner: group77
@@ -110,37 +131,24 @@ COPY public.fixtures (id, date, venue, home_id, away_id) FROM stdin;
 -- Data for Name: groups; Type: TABLE DATA; Schema: public; Owner: group77
 --
 
-COPY public.groups (id, name, team_id) FROM stdin;
-0	Group A	25
-1	Group A	15
-2	Group A	1108
-3	Group A	769
-4	Group B	768
-5	Group B	3
-6	Group B	9
-7	Group B	778
-8	Group C	1091
-9	Group C	21
-10	Group C	10
-11	Group C	14
-12	Group D	24
-13	Group D	775
-14	Group D	2
-15	Group D	1118
-16	Group E	774
-17	Group E	1
-18	Group E	773
-19	Group E	772
-20	Group F	770
-21	Group F	777
-22	Group F	27
-23	Group F	1104
-24	Ranking of third-placed teams	2
-25	Ranking of third-placed teams	27
-26	Ranking of third-placed teams	9
-27	Ranking of third-placed teams	1108
-28	Ranking of third-placed teams	773
-29	Ranking of third-placed teams	10
+COPY public.groups (id, name) FROM stdin;
+0	Group A
+1	Group B
+2	Group C
+3	Group D
+4	Group E
+5	Group F
+\.
+
+
+--
+-- Data for Name: locales; Type: TABLE DATA; Schema: public; Owner: group77
+--
+
+COPY public.locales (id, locale) FROM stdin;
+en_EN	{"id": "en_EN", "name": "EN", "views": {"error": {"0": "Return to the", "1": "frontpage", "404": "Nothing here"}, "/": {}}, "navbar": {"0": "Teams", "1": "Groups", "2": "Matches"}, "counter": {"0": "days", "1": "hours", "2": "minutes", "3": "seconds"}, "groups": {"name": {"0": "Group A", "1": "Group B", "2": "Group C", "3": "Group D", "4": "Group E", "5": "Group F"}}, "teams": {"name": {"1": "Belgium", "2": "France", "3": "Croatia", "9": "Spain", "10": "England", "14": "Serbia", "15": "Switzerland", "21": "Denmark", "24": "Poland", "25": "Germany", "27": "Portugal", "768": "Italy", "769": "Hungary", "770": "Czech Republic", "772": "Ukraine", "773": "Slovakia", "774": "Romania", "775": "Austria", "777": "Turkey", "778": "Albania", "1091": "Slovenia", "1104": "Georgia", "1108": "Scotland", "1118": "Netherlands"}}}
+da_DK	{"id": "da_DK", "name": "DK", "views": {"error": {"0": "Vend tilbage til", "1": "forsiden", "404": "Ingenting her"}, "/": {}}, "navbar": {"0": "Hold", "1": "Grupper", "2": "Kampe"}, "counter": {"0": "dage", "1": "timer", "2": "minutter", "3": "sekunder"}, "groups": {"name": {"0": "Gruppe A", "1": "Gruppe B", "2": "Gruppe C", "3": "Gruppe D", "4": "Gruppe E", "5": "Gruppe F"}}, "teams": {"name": {"1": "Belgien", "2": "Frankrig", "3": "Kroatien", "9": "Spanien", "10": "England", "14": "Serbien", "15": "Schweiz", "21": "Danmark", "24": "Polen", "25": "Tyskland", "27": "Portugal", "768": "Italien", "769": "Ungarn", "770": "Tjekkiet", "772": "Ukraine", "773": "Slovakiet ", "774": "Rum\\u00e6nien", "775": "\\u00d8strig", "777": "Tyrkiet", "778": "Albanien", "1091": "Slovenien", "1104": "Georgien", "1108": "Skotland", "1118": "Holland"}}}
+sv_SWE	{"id": "sv_SWE", "name": "SWE", "views": {"error": {"0": "G\\u00e5 tillbaka till", "1": "startsida", "404": "H\\u00e4r var det tomt"}, "/": {}}, "navbar": {"0": "Lag", "1": "Grupper", "2": "Matches"}, "counter": {"0": "dagar", "1": "timmar", "2": "minuter", "3": "sekunder"}, "groups": {"name": {"0": "Grupp A", "1": "Grupp B", "2": "Grupp C", "3": "Grupp D", "4": "Grupp E", "5": "Grupp F"}}, "teams": {"name": {"1": "Belgien", "2": "Frankrike", "3": "Kroatien", "9": "Spanien", "10": "England", "14": "Serbien", "15": "Schweiz", "21": "Danmark", "24": "Polen", "25": "Tyskland", "27": "Portugal", "768": "Italien", "769": "Ungern", "770": "Tjeckien", "772": "Ukraina", "773": "Slovakien ", "774": "Rum\\u00e4nien", "775": "\\u00d6sterrike", "777": "Turkiet", "778": "Albanien", "1091": "Slovenien", "1104": "Georgien", "1108": "Skottland", "1118": "Nederl\\u00e4nderna"}}}
 \.
 
 
@@ -193,6 +201,14 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: locales locales_pkey; Type: CONSTRAINT; Schema: public; Owner: group77
+--
+
+ALTER TABLE ONLY public.locales
+    ADD CONSTRAINT locales_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: teams teams_pkey; Type: CONSTRAINT; Schema: public; Owner: group77
 --
 
@@ -205,7 +221,7 @@ ALTER TABLE ONLY public.teams
 --
 
 ALTER TABLE ONLY public.fixtures
-    ADD CONSTRAINT fixtures_away_id_fkey FOREIGN KEY (away_id) REFERENCES public.teams(id);
+    ADD CONSTRAINT fixtures_away_id_fkey FOREIGN KEY (away_id) REFERENCES public.teams(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -213,15 +229,7 @@ ALTER TABLE ONLY public.fixtures
 --
 
 ALTER TABLE ONLY public.fixtures
-    ADD CONSTRAINT fixtures_home_id_fkey FOREIGN KEY (home_id) REFERENCES public.teams(id);
-
-
---
--- Name: groups groups_team_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: group77
---
-
-ALTER TABLE ONLY public.groups
-    ADD CONSTRAINT groups_team_id_fkey FOREIGN KEY (team_id) REFERENCES public.teams(id);
+    ADD CONSTRAINT fixtures_home_id_fkey FOREIGN KEY (home_id) REFERENCES public.teams(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 --

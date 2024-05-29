@@ -1,0 +1,23 @@
+{
+    "id": "sv_SWE",
+    "name": "SWE",
+    "views": {
+        "error": {
+            "0": "Gå tillbaka till",
+            "1": "startsida",
+            "404": "Här var det tomt"
+        },
+        "/": {}
+    },
+    "navbar": {
+        "0": "Lag",
+        "1": "Grupper",
+        "2": "Matches"
+    },
+    "counter": {
+        "0": "dagar",
+        "1": "timmar",
+        "2": "minuter",
+        "3": "sekunder"
+    }
+}

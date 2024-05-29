@@ -2,6 +2,7 @@ import os, json
 from re import match
 from flask import Flask, redirect, request
 from psycopg import Connection
+from psycopg.rows import dict_row
 from dotenv import load_dotenv
 
 locale = None
@@ -21,22 +22,23 @@ except Exception as e:
 def create_app():
     app = Flask(__name__)
 
-    app.config["locales"] = []
-    for locale in os.listdir("locale"):
-        app.config["locales"].append(match(r"^[a-z]{2}_([A-Z]{2}).json$", locale)[1])
-    with open("locale/en_EN.json", "r") as file:
-        app.config["locale"] = json.load(file)
-
     from src.routes.index import Index
     from src.routes.error import Error
     app.register_blueprint(Index)
     app.register_blueprint(Error)
 
+    with con.cursor(row_factory=dict_row) as cursor:
+        app.config["locales"] = cursor.execute("SELECT * FROM locales;").fetchall()
+    @app.get("/locale/<iso>")
+    def set_locale(iso: str):
+        for row in app.config["locales"]:
+            if row["id"] != iso:
+                continue
+            app.config["locale"] = row["locale"]
+            break
 
-    @app.get("/locale/<locale>")
-    def set_locale(locale:str):
-        with open(f"locale/{locale.lower()}_{locale}.json", "r") as file: 
-            app.config["locale"] = json.load(file)
-        return redirect(request.referrer)
-    
+        if request:
+            return redirect(request.referrer)
+
+    set_locale("en_EN")
     return app

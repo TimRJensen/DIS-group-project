@@ -10,11 +10,11 @@
             <input type="text" />
         </form>
         <div class="locales" tabindex="-1">
-            {% for locale in config["locales"] %}
-                {% if locale == config["locale"]["name"] %}
-                    <a class="link" href="/locale/{{locale}}"><strong>{{locale}}</strong></a>
+            {% for row in config["locales"] %}
+                {% if row["id"] == config["locale"]["id"] %}
+                    <a class="link" href="/locale/{{row['id']}}"><strong>{{row["locale"]["name"]}}</strong></a>
                 {% else %}
-                    <a class="link" href="/locale/{{locale}}" >{{locale}}</a>
+                    <a class="link" href="/locale/{{row['id']}}" >{{row["locale"]["name"]}}</a>
                 {% endif %}
             {% endfor %}    
         </div>
