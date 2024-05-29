@@ -7,7 +7,11 @@
             "1": "forsiden",
             "404": "Ingenting her"
         },
-        "/": {}
+        "/": {},
+        "groups": {
+            "0": "Grupper",
+            "1": "Gruppe"
+        }
     },
     "navbar": {
         "0": "Hold",

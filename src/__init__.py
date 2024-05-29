@@ -24,8 +24,10 @@ def create_app():
 
     from src.routes.index import Index
     from src.routes.error import Error
+    from src.routes.groups import Groups
     app.register_blueprint(Index)
     app.register_blueprint(Error)
+    app.register_blueprint(Groups)
 
     with con.cursor(row_factory=dict_row) as cursor:
         app.config["locales"] = cursor.execute("SELECT * FROM locales;").fetchall()

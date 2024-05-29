@@ -7,7 +7,11 @@
             "1": "startsida",
             "404": "Här var det tomt"
         },
-        "/": {}
+        "/": {},
+        "groups": {
+            "0": "Grupper",
+            "1": "Grupp"
+        }
     },
     "navbar": {
         "0": "Lag",

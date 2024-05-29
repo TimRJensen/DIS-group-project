@@ -43,6 +43,16 @@
                 "foreign-table": "",
                 "localize": false,
                 "dedupe": false            
+            },
+            {
+                "name": "group_id",
+                "type": "VARCHAR(64)",
+                "api-key": "groups:team:logo",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "groups",
+                "localize": false,
+                "dedupe": false            
             }
         ]
     },

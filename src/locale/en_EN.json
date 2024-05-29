@@ -7,7 +7,11 @@
             "1": "frontpage",
             "404": "Nothing here"
         },
-        "/": {}
+        "/": {},
+        "groups": {
+            "0": "Groups",
+            "1": "Group"
+        }
     },
     "navbar": {
         "0": "Teams",

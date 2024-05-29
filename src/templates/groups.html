@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+{% set text = config["locale"]["views"]["groups"] %}
+{% set groups = config["locale"]["groups"]["name"] %}
+{% set teams = config["locale"]["teams"]["name"] %}
+{% block title %}
+<title>{{text["0"]}}</title>
+{% endblock title %} 
+{% block head %} {% endblock %}
+{% block content %} 
+<section id="groups" class="view">
+    {% for row in data %}
+        <div class="group">
+            <div class="label"><a href="/groups/{{row['id']|string}}">{{text["1"]}} {{groups[row["id"]|string]}}</a></div>
+            <div class="teams">
+                <div></div>
+                <div></div>
+                <div>+</div>
+                <div>-</div>
+                <div>P</div>
+                {% for team in row["teams"] %}
+                    <img class="logo" src="{{row['logoes'][loop.index0]}}"/>
+                    <div class="team"><a href="/teams/{{team|string}}">{{teams[team|string]}}</a></div>
+                    <div>0</div>
+                    <div>0</div>
+                    <div>0</div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
