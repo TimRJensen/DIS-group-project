@@ -45,8 +45,48 @@
                 "dedupe": false            
             },
             {
+                "name": "rank",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:rank",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "points",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:points",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "goals_for",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:goals:for",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "goals_against",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:goals:against",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
                 "name": "group_id",
-                "type": "VARCHAR(64)",
+                "type": "INT",
                 "api-key": "groups:team:id",
                 "primary-key": false,
                 "foreign-key": "id",

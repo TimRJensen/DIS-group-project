@@ -16,13 +16,13 @@
                 <div></div>
                 <div>+</div>
                 <div>-</div>
-                <div>P</div>
+                <div class="points">P</div>
                 {% for team in row["teams"] %}
                     <img class="logo" src="{{row['logoes'][loop.index0]}}"/>
                     <div class="team"><a href="/teams/{{team|string}}">{{teams[team|string]}}</a></div>
-                    <div>0</div>
-                    <div>0</div>
-                    <div>0</div>
+                    <div>{{row["goals_for"][loop.index0]}}</div>
+                    <div>{{row["goals_against"][loop.index0]}}</div>
+                    <div class="points">{{row["points"][loop.index0]}}</div>
                 {% endfor %}
             </div>
         </div>

@@ -102,7 +102,7 @@ def sql_from_api(query: str, table: str, data: dict[str, list]):
                 rows["id"] = [i for i in range(len(rows[col["name"]]))]
         if col["primary-key"]:
             p_keys.append(col["name"])
-        if col["foreign-key"]:
+        if col["foreign-table"]:
             f_keys.append((col["name"], col["foreign-table"], col["foreign-key"]))
         if col["localize"]:
             for i, item in enumerate(rows[col["name"]]):
@@ -132,7 +132,14 @@ def sql_from_api(query: str, table: str, data: dict[str, list]):
     for col in cols:
         if col["name"] in rows:
             continue
-        row = data["rows"][col["foreign-table"]][col["foreign-key"]]
+        row = None
+        if col["foreign-table"]:
+            row = data["rows"][col["foreign-table"]][col["foreign-key"]]
+        # elif col["foreign-key"]:
+            # row = data[col["foreign-key"]]
+        else:
+            row = data[col["foreign-key"]]
+            # continue
         result += "{0}\n\n".format(
             "\n".join([
                 "UPDATE {0} SET {1} = {2} WHERE (id) = {3};".format(

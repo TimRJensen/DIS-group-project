@@ -264,12 +264,17 @@ body {
 #groups.view .group .teams {
     display: grid;
     grid-template-columns: 32px 4fr 1fr 1fr 1fr;
-    grid-template-rows: repeat(auto-fill, 1fr);
-    align-items: center;
+    grid-template-rows: repeat(auto-fill, 32px);
     column-gap: 10px;
-    row-gap: 10px;
-    padding: 10px;
-    text-align: right;
+    /* row-gap: 10px; */
+    padding: 0 0 0 10px;
+    text-align: center;
+}
+
+#groups.view .group .teams * {
+    height: 32px;
+    max-height: 32px;
+    line-height: 32px;
 }
 
 #groups.view .group .team {
