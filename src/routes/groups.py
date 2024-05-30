@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request
+from datetime import datetime
+from flask import Blueprint, render_template
 from dataclasses import dataclass
 from psycopg.rows import class_row
 from src.app import con
@@ -12,22 +13,88 @@ class Group:
     goals_against: list[int]
     points: list[int]
 
-Groups = Blueprint("groups", __name__)
+Groups = Blueprint("groups", __name__, url_prefix="/groups")
 
-@Groups.get("/groups")
+@Groups.get("/")
 def groups():
     with con.cursor(row_factory=class_row(Group)) as cursor:
         cursor.execute(
 """SELECT 
-	groups.id as id, 
-	ARRAY_AGG(teams.id ORDER BY teams.rank) as teams, 
-	ARRAY_AGG(teams.logo ORDER BY teams.rank) as logoes,
-	ARRAY_AGG(teams.points ORDER BY teams.rank) as points,
-	ARRAY_AGG(teams.goals_for ORDER BY teams.rank) as goals_for,
-	ARRAY_AGG(teams.goals_against ORDER BY teams.rank) as goals_against
-FROM groups
-JOIN teams ON group_id = groups.id
-GROUP BY groups.id
-ORDER BY groups.id;""")
+	g.id, 
+	ARRAY_AGG(t.id ORDER BY t.rank) teams, 
+	ARRAY_AGG(t.logo ORDER BY t.rank) logoes,
+	ARRAY_AGG(t.points ORDER BY t.rank) points,
+	ARRAY_AGG(t.goals_for ORDER BY t.rank) goals_for,
+	ARRAY_AGG(t.goals_against ORDER BY t.rank) goals_against
+FROM groups g
+JOIN teams t ON group_id = g.id
+GROUP BY g.id
+ORDER BY g.id;""")
         return render_template("groups.html", data=cursor.fetchall())
         
+@dataclass
+class GroupWithID:
+    id: int
+    team_id: int
+    logo: str
+    wins: int
+    draws: int
+    loses: int
+    points: int
+    goals_for: int
+    goals_against: int
+
+@dataclass
+class GroupWithIDFixtures:
+    id: int
+    fixture_id: int
+    home_id: int
+    home_logo: str
+    away_id: int
+    away_logo: str
+    date: datetime
+
+@Groups.get("/<id>")
+def group(id: str):
+    data = {}
+    with con.cursor(row_factory=class_row(GroupWithID)) as cursor:
+        cursor.execute(
+"""SELECT 
+    g.id,
+    t.id team_id, 
+    logo, 
+    wins,
+    draws,
+    loses,  
+    points, 
+    goals_for, 
+    goals_against
+FROM groups g
+JOIN teams t ON t.group_id = g.id
+WHERE g.id = {0}
+ORDER BY t.rank;
+""".format(id))
+        data["group"] = cursor.fetchall()
+
+    with con.cursor(row_factory=class_row(GroupWithIDFixtures)) as cursor:
+        cursor.execute(
+"""SELECT 
+    g.id, 
+    f.id fixture_id, 
+    th.id home_id, 
+    th.logo home_logo, 
+    ta.id away_id, 
+    ta.logo away_logo, 
+    f.date 
+FROM groups as g
+JOIN (fixtures f
+	JOIN teams th ON f.home_id = th.id 
+	JOIN teams ta ON f.away_id = ta.id 
+) ON th.group_id = g.id OR ta.group_id = g.id
+WHERE g.id = {0}
+ORDER BY f.date;
+""".format(id))
+        data["fixtures"] = cursor.fetchall()
+        data["date"] = ["{0} {1}:00".format(row.date.date(), row.date.hour) for row in data["fixtures"]]
+        print(data["date"])
+    return render_template("group.html", **data)

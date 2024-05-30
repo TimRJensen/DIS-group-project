@@ -61,6 +61,7 @@ body {
     padding-right: 20px;
     background-color: var(--color-primary-dark);
     color: white;
+    z-index: 100;
 }
 
 #nav-bar .linkbox {

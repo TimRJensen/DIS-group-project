@@ -1,0 +1,54 @@
+{% extends "base.html" %} 
+{% set text = config["locale"]["views"]["group"] %}
+{% set groups = config["locale"]["groups"]["name"] %}
+{% set teams = config["locale"]["teams"]["name"] %}
+{% block title %}
+<title>UEFA EURO 2024 {{groups[group[0]["id"]|string]}}</title>
+{% endblock title %} 
+{% block head %} 
+<link rel="stylesheet" href="/static/css/group.css" />
+{% endblock %}
+{% block content %} 
+<section id="group" class="view">
+    <div class="group">
+        <div class="label">{{groups[group[0]["id"]|string]}} {{text["0"]}}</div>
+        <div class="teams">
+            <div></div>
+            <div></div>
+            <div>{{text["1"]}}</div>
+            <div>{{text["2"]}}</div>
+            <div>{{text["3"]}}</div>
+            <div>+</div>
+            <div>-</div>
+            <div>P</div>
+            {% for row in group %}
+                <div class="logobox">
+                    <img class="logo" src="{{row['logo']}}" data-ignore="{{row['team_id']}}"/>
+                </div>
+                <div class="team"><a href="/teams/{{row['team_id']|string}}">{{teams[row["team_id"]|string]}}</a></div>
+                <div>{{row["wins"]}}</div>
+                <div>{{row["draws"]}}</div>
+                <div>{{row["loses"]}}</div>
+                <div>{{row["goals_for"]}}</div>
+                <div>{{row["goals_against"]}}</div>
+                <div>{{row["points"]}}</div>
+            {% endfor %}
+        </div>
+        <div class="label">{{text["4"]}}</div>
+        <div class="fixtures">
+            {% for row in fixtures %}
+                <div class="date"><a href="/fixtures/{{row['fixture_id']}}">{{date[loop.index0]}}</a></div>
+                <div class="logobox">
+                    <img class="logo" src="{{row['home_logo']}}" data-ignore="{{row['home_id']}}"/>
+                </div>
+                <div class="team home"><a href="/teams/{{row['home_id']|string}}">{{teams[row["home_id"]|string]}}</a></div>
+                <div>vs.</div>
+                <div class="team"><a href="/teams/{{row['away_id']|string}}">{{teams[row["away_id"]|string]}}</a></div>
+                <div class="logobox">
+                    <img class="logo" src="{{row['away_logo']}}" data-ignore="{{row['away_id']}}"/>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -10,6 +10,13 @@
         "/": {},
         "groups": {
             "0": "Grupper"
+        },
+        "group": {
+            "0": "Ställningar",
+            "1": "V",
+            "2": "D",
+            "3": "F",
+            "4": "Kommande matcher"
         }
     },
     "navbar": {

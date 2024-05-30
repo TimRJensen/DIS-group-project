@@ -85,6 +85,36 @@
                 "dedupe": false            
             },
             {
+                "name": "wins",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:win",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "loses",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:lose",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "draws",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:draw",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
                 "name": "group_id",
                 "type": "INT",
                 "api-key": "groups:team:id",

@@ -10,6 +10,13 @@
         "/": {},
         "groups": {
             "0": "Groups"
+        },
+        "group": {
+            "0": "Standings",
+            "1": "W",
+            "2": "D",
+            "3": "L",
+            "4": "Upcomming matches"
         }
     },
     "navbar": {
