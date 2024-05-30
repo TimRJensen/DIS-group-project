@@ -228,56 +228,67 @@ body {
     text-align: center;
 }
 
-#groups.view {
-    flex-flow: row wrap;
-    justify-content: center;
-    align-self: center;
-    padding: 50px 0 50px 0;
-    gap: 50px;
-    max-width: 800px;
-}
-
-#groups.view .group {
-    width: 375px;
-    max-width:375px;
-    padding-bottom: 10px;
+/* Groups & group specific */
+#groups.view .group,
+#group.view .group {
+    --logo-size: 32px;
     border: 2px solid var(--color-secondary);
     border-radius: 4px;
 }
 
-#groups.view .group .label {
+#groups.view .group div,
+#group.view .group div {
+    line-height: var(--logo-size);
+    text-align: center;
+}
+
+#groups.view .group .label,
+#group.view .group .label {
     background-color: var(--color-secondary);
     text-align: center;
     padding: 10px 0;
     font-size: 1.2rem;
-}
-
-#groups.view .group .label a {
     color: white;
     text-decoration: none;
 }
 
-#groups.view .group .logo {
-    width: 32px;
-    object-fit: contain;
+#groups.view .group .logobox,
+#group.view .group .logobox {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    mask: url("../img/logo-mask.svg") 50% 50% / var(--logo-size) var(--logo-size) no-repeat content-box;
 }
 
-#groups.view .group .teams {
-    display: grid;
-    grid-template-columns: 32px 4fr 1fr 1fr 1fr;
-    grid-template-rows: repeat(auto-fill, 32px);
-    column-gap: 10px;
-    /* row-gap: 10px; */
-    padding: 0 0 0 10px;
-    text-align: center;
+#groups.view .group .logobox::after,
+#group.view .group .logobox::after {
+    position: absolute;
+    content: " ";
+    width: var(--logo-size);
+    height: var(--logo-size);
+    border: 1.5px solid var(--color-secondary);
+    border-radius: 50%;
 }
 
-#groups.view .group .teams * {
-    height: 32px;
-    max-height: 32px;
-    line-height: 32px;
+/* 
+    Most of the logoes from the API are 1/1 with padding on the top and bottom. So:
+*/
+#groups.view .group .logo,
+#group.view .group .logo {
+    height: var(--logo-size);
+    aspect-ratio: 1.65/1;
+    object-fit: cover;
 }
 
-#groups.view .group .team {
+#groups.view .group .logo[data-ignore="15"],
+#group.view .group .logo[data-ignore="15"],
+#groups.view .group .logo[data-ignore="1104"],
+#group.view .group .logo[data-ignore="1104"]  { /* Ignore Switzerland, Georgia */
+    aspect-ratio: 1/1;
+    object-fit: unset;
+}
+
+#groups.view .group .team,
+#group.view .group .team  {
     text-align: left;
 }

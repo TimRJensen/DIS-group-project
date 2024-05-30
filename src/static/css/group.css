@@ -2,75 +2,25 @@
     align-self: center;
     flex-flow: column nowrap;
     align-items: center;
-    padding-top: 50px;
-    gap: 25px;
+    width: 800px;
+    max-width: 800px;
+    padding: 50px 0;
 }
 
 #group.view .group {
-    width: 750px;
-    max-width:750px;
-    padding-bottom: 50px;
-    border: 2px solid var(--color-secondary);
-    border-radius: 4px;
-}
-
-#group.view div {
-    line-height: 48px;
-    text-align: center;
-}
-
-#group.view .group .label {
-    padding: 10px 0;
-    background-color: var(--color-secondary);
-    color: white;
-    text-align: center;
-    font-size: 1.2rem;
+    --logo-size: 48px;
+    width: 700px;
+    max-width:700px;
 }
 
 #group.view .group .teams {
     display: grid;
     grid-template-columns: 1fr 4fr repeat(6, 1fr);
-    grid-template-rows: repeat(auto-fill, 48px);
+    grid-template-rows: repeat(auto-fill, var(--logo-size));
     column-gap: 10px;
     row-gap: 10px;
     padding: 50px 10px;
     text-align: center;
-}
-
-#group.view .group .logobox {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    mask: url("../img/logo-mask.svg") 50% 50% / 48px 48px no-repeat content-box;
-}
-
-#group.view .group .logobox::after {
-    position: absolute;
-    content: " ";
-    width: 48px;
-    height: 48px;
-    border: 1.5px solid var(--color-secondary);
-    border-radius: 50%;
-}
-
-/* 
-    Most of the logoes from the API are 1/1 with padding on the top and bottom. So:
-*/
-#group.view .group .logo {
-    height: 48px;
-    aspect-ratio: 1.65/1;
-    object-fit: cover;
-}
-
-#group.view .group .logo[data-ignore="15"],
-#group.view .group .logo[data-ignore="1104"]  { /* Ignore Switzerland, Georgia */
-    aspect-ratio: 1/1;
-    object-fit: unset;
-}
-
-#group.view .group .team {
-    text-align: left;
-    line-height: 48px;
 }
 
 #group.view .group .fixtures {

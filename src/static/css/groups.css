@@ -1,0 +1,29 @@
+#groups.view {
+    align-self: center;
+    flex-flow: row wrap;
+    justify-content: center;
+    width: 800px;
+    max-width: 800px;
+    padding: 50px 0;
+    gap: 50px;
+}
+
+#groups.view .group {
+    --logo-size: 32px;
+    width: 350px;
+    max-width:350px;
+}
+
+#groups.view .group .label a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+#groups.view .group .teams {
+    display: grid;
+    grid-template-columns: var(--logo-size) 4fr repeat(3, 1fr);
+    grid-template-rows: repeat(auto-fill, 32px);
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 10px;
+}
