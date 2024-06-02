@@ -1,35 +1,43 @@
 {% set text = config["locale"]["counter"] %}
 <div id="counter" >
-    <div class="digits">
-        <div class="digit" data-now data-next data-animate>
+    <div class="box">
+        <div class="digits">
+            <div class="digit" data-now data-next data-animate>
+            </div>
+            <div class="digit">
+            </div>
+            <div class="digit">
+            </div>
         </div>
-        <div class="digit">
-        </div>
-        <div class="digit">
-        </div>
+        <span>{{text["0"]}}</span>
     </div>
-    <span>{{text["0"]}}</span>
-    <div class="digits">
-        <div class="digit" data-now="0" data-next="2" data-animate>
+    <div class="box">
+        <div class="digits">
+            <div class="digit" data-now="0" data-next="2" data-animate>
+            </div>
+            <div class="digit" data-now="0" data-next="3" data-animate>
+            </div>
         </div>
-        <div class="digit" data-now="0" data-next="3" data-animate>
-        </div>
+        <span>{{text["1"]}}</span>
     </div>
-    <span>{{text["1"]}}</span>
-    <div class="digits">
-        <div class="digit" data-now="0" data-next="5" data-animate>
+    <div class="box">
+        <div class="digits">
+            <div class="digit" data-now="0" data-next="5" data-animate>
+            </div>
+            <div class="digit" data-now="0" data-next="9" data-animate>
+            </div>
         </div>
-        <div class="digit" data-now="0" data-next="9" data-animate>
-        </div>
+        <span>{{text["2"]}}</span>
     </div>
-    <span>{{text["2"]}}</span>
-    <div class="digits">
-        <div class="digit" data-now="0" data-next="5" data-animate>
+    <div class="box">
+        <div class="digits">
+            <div class="digit" data-now="0" data-next="5" data-animate>
+            </div>
+            <div class="digit" data-now="0" data-next="9" data-animate>
+            </div>
         </div>
-        <div class="digit" data-now="0" data-next="9" data-animate>
-        </div>
+        <span>{{text["3"]}}</span>
     </div>
-    <span>{{text["3"]}}</span>
 </div> 
 
 <script>(function(){
