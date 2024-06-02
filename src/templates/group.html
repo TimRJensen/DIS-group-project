@@ -1,7 +1,7 @@
 {% extends "base.html" %} 
-{% set text = config["locale"]["views"]["group"] %}
-{% set groups = config["locale"]["groups"]["name"] %}
-{% set teams = config["locale"]["teams"]["name"] %}
+{% set text = locale["views"]["group"] %}
+{% set groups = locale["groups"]["name"] %}
+{% set teams = locale["teams"]["name"] %}
 {% block title %}
 <title>UEFA EURO 2024 {{groups[group[0]["id"]|string]}}</title>
 {% endblock title %} 
