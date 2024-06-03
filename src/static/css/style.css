@@ -62,7 +62,7 @@ body {
     height: 64px;
     top: 0px;
     padding-right: 10px;
-    box-shadow: 0px 1px 2.5px black;
+    box-shadow: 0px 1.5px 1.5px black;
     background-color: var(--color-primary-dark);
     color: white;
     z-index: 1;
@@ -101,7 +101,8 @@ body {
     gap: 5px;
 }
 
-.linkbox .link:hover, 
+.linkbox .link:hover,
+.linkbox .link[data-toggled=true],
 .controlbox .button:hover,
 .burger.button:hover {
     background-color: var(--color-primary);
@@ -137,16 +138,16 @@ body {
 
 .controlbox .button,
 .burger.button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
     height: 34px;
     width: 34px;
     border: white solid 1.5px;
     border-radius: 4px;
-    cursor: pointer;
+    padding: 0;
     background-color: transparent;
     color: white;
+    cursor: pointer;
+    text-align: center;
+    line-height: 31px;
 }
 
 .burger.button {
@@ -329,7 +330,7 @@ body {
 
 @media only screen and (min-width: 768px) {
     #counter {flex-flow: row nowrap;}
-    #nav-bar .burger.button {display: none;}
+    #nav-bar .burger.button {visibility: hidden;}
     #nav-bar .controlbox {display: flex; gap: 10px}
     #nav-bar .linkbox:has(~ .burger.button[data-toggled=true]) {width: unset;}
     #groups.view .group {border: 2px solid var(--color-secondary);}

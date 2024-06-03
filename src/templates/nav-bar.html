@@ -62,6 +62,17 @@
         e.target.dataset["toggled"] = "true"
     })
 
+    const tokens = document.location.pathname.split("/")
+    const routes = ["teams", "groups", "fixtures"]
 
+    for (const route of routes) {
+        if (route != tokens[1]) {
+            continue
+        }
+
+        const element = document.querySelector(`.link[href="/${route}"]`)
+        element.dataset["toggled"] = "true"
+        break
+    }
 })()
 </script>
