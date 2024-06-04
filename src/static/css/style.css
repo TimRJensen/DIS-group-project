@@ -159,7 +159,6 @@ body {
     display: flex;
     flex-flow: row wrap;
     align-items: baseline;
-    width: clamp(100px, 100%, max-content);
     gap: 5px;
     font-size: 1.5rem;
     font-weight: 700;
