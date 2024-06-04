@@ -65,8 +65,15 @@ def json_flatten(data: list[dict|list], key="", result: dict[str, list]={}):
 
 
 def sql_stringify(s: str|int, t: str) -> str:
-    if s != "NULL" and re.match(r"^VARCHAR|^TIMESTAMP", t) != None:
+    if re.match(r"^VARCHAR|^TIMESTAMP", t) != None:
         return "'" + s + "'"
+    elif s == None:
+        if t == "INT":
+            return str(0)
+        elif re.match(r"^VARCHAR", t) != None:
+            return '""'
+        else:
+            return "NULL"
     return str(s)
 
 def sql_from_api(query: str, table: str, data: dict[str, list]):
@@ -135,17 +142,14 @@ def sql_from_api(query: str, table: str, data: dict[str, list]):
         row = None
         if col["foreign-table"]:
             row = data["rows"][col["foreign-table"]][col["foreign-key"]]
-        # elif col["foreign-key"]:
-            # row = data[col["foreign-key"]]
         else:
             row = data[col["foreign-key"]]
-            # continue
         result += "{0}\n\n".format(
             "\n".join([
                 "UPDATE {0} SET {1} = {2} WHERE (id) = {3};".format(
                     schema[table]["name"], 
                     col["name"],
-                    row[i//(len(data[col["api-key"]])//len(row))],
+                    sql_stringify(row[i//(len(data[col["api-key"]])//len(row))], col["type"]),
                     lid
                 ) 
                 for lid in rows["id"] 

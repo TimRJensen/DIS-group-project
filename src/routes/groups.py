@@ -53,6 +53,9 @@ class GroupWithIDFixtures:
     away_id: int
     away_logo: str
     date: datetime
+    status: str
+    home_goals: int
+    away_goals: int
 
 @Groups.get("/<id>")
 def group(id: str):
@@ -85,7 +88,10 @@ ORDER BY t.rank;
     th.logo home_logo, 
     ta.id away_id, 
     ta.logo away_logo, 
-    f.date 
+    f.date,
+    f.status,
+    f.home_goals,
+    f.away_goals 
 FROM groups as g
 JOIN (fixtures f
 	JOIN teams th ON f.home_id = th.id 
@@ -94,7 +100,8 @@ JOIN (fixtures f
 WHERE g.id = {0}
 ORDER BY f.date;
 """.format(id))
-        data["fixtures"] = cursor.fetchall()
-        data["date"] = ["{0} {1}:00".format(row.date.date(), row.date.hour) for row in data["fixtures"]]
-        print(data["date"])
-    return render_template("group.html", **data)
+        fixtures = cursor.fetchall()
+        data["upcomming"] = [row for row in fixtures if row.status == "NS"]
+        data["latest"] = [row for row in fixtures if row.status == "FT"]
+        print(data["latest"])
+    return render_template("groups:id.html", **data)

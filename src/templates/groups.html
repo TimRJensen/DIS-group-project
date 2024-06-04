@@ -12,21 +12,29 @@
 <section id="groups" class="view">
     {% for row in data %}
         <div class="group">
-            <div class="label"><a href="/groups/{{row['id']|string}}">{{groups[row["id"]|string]}}</a></div>
+            <a href="/groups/{{row['id']|string}}">
+                <div class="label">{{groups[row["id"]|string]}}</div>
+            </a>
             <div class="teams">
-                <div></div>
-                <div></div>
-                <div>+</div>
-                <div>-</div>
-                <div class="points">P</div>
+                <div class="header">
+                    <div></div>
+                    <div></div>
+                    <div>P</div>
+                    <div>+</div>
+                    <div>-</div>
+                </div>
                 {% for team in row["teams"] %}
-                    <div class="logobox">
-                        <img class="logo" src="{{row['logoes'][loop.index0]}}" data-ignore="{{team}}"/>
-                    </div>
-                    <div class="team"><a href="/teams/{{team|string}}">{{teams[team|string]}}</a></div>
-                    <div>{{row["goals_for"][loop.index0]}}</div>
-                    <div>{{row["goals_against"][loop.index0]}}</div>
-                    <div class="points">{{row["points"][loop.index0]}}</div>
+                    <a href="/teams/{{team|string}}">
+                        <div class="row">
+                            <div class="logobox">
+                                <img class="logo" src="{{row['logoes'][loop.index0]}}" data-ignore="{{team}}"/>
+                            </div>
+                            <div class="team">{{teams[team|string]}}</div>
+                            <div>{{row["goals_for"][loop.index0]}}</div>
+                            <div>{{row["goals_against"][loop.index0]}}</div>
+                            <div class="points">{{row["points"][loop.index0]}}</div>
+                        </div>
+                    </a>
                 {% endfor %}
             </div>
         </div>

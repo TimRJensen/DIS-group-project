@@ -11,19 +11,32 @@
     width: 100%;
 }
 
-#groups.view .group .label a {
+#groups.view .group a {
     color: inherit;
     text-decoration: inherit;
 }
 
 #groups.view .group .teams {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px 10px;
+}
+
+#groups.view .group .teams .header,
+#groups.view .group .teams .row {
     display: grid;
     grid-template-columns: var(--logo-size) 4fr repeat(3, 1fr);
-    grid-template-rows: repeat(auto-fill, 32px);
+    grid-template-rows: repeat(auto-fill, 1fr);
     column-gap: 10px;
     row-gap: 10px;
     padding: 10px;
 }
+
+#groups.view .group .teams .row:hover {
+    background-color: #DFDFDF;
+    border-radius: 10px;
+}
+
 
 @media only screen and (min-width: 768px) {
     #groups.view {width: 768px;}

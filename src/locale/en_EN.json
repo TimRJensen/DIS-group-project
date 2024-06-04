@@ -16,7 +16,10 @@
             "1": "W",
             "2": "D",
             "3": "L",
-            "4": "Upcomming matches"
+            "4": "Upcomming matches",
+            "5": "Latest matches",
+            "06": "June",
+            "07": "July"
         }
     },
     "navbar": {

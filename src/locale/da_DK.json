@@ -16,7 +16,10 @@
             "1": "V",
             "2": "U",
             "3": "T",
-            "4": "Kommende kampe"
+            "4": "Kommende kampe",
+            "5": "Seneste kampe",
+            "06": "Juni",
+            "07": "Juli"
         }
     },
     "navbar": {

@@ -207,6 +207,117 @@
                 "foreign-table": "Teams",
                 "localize": false,
                 "dedupe": false
+            },
+            {
+                "name": "status",
+                "type": "VARCHAR(4)",
+                "api-key": "fixtures:fixture:status:short",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "home_goals",
+                "type": "INT",
+                "api-key": "fixtures:goals:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "away_goals",
+                "type": "INT",
+                "api-key": "fixtures:goals:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "halftime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:halftime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "halftime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:halftime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "fulltime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:fulltime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "fulltime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:fulltime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "extratime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:extratime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "extratime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:extratime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "penalty_home",
+                "type": "INT",
+                "api-key": "fixtures:score:penalty:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            
+            {
+                "name": "penalty_away",
+                "type": "INT",
+                "api-key": "fixtures:score:penalty:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             }
         ]
     },
