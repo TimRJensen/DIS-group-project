@@ -308,14 +308,18 @@ func sqlFromLocales(query, table string, data flatObject) string {
 			tokens := []string{
 				t.Name,
 				ld.col.Name,
-				fmt.Sprintf("%d", int(data[t.Cols[0].ApiKey][i%len(t.Cols)].(float64))),
+				fmt.Sprintf("%d", int(data[t.Cols[0].ApiKey][i%len(data[t.Cols[0].ApiKey])].(float64))),
 			}
 
 			l := locale
+			token := ""
 			for len(tokens) > 1 {
-				l[tokens[0]] = map[string]interface{}{}
-				l = l[tokens[0]].(map[string]interface{})
+				token = tokens[0]
+				if _, ok := l[token]; !ok {
+					l[token] = map[string]interface{}{}
+				}
 				tokens = tokens[1:]
+				l = l[token].(map[string]interface{})
 			}
 
 			l[tokens[0]] = strings.TrimSpace(items[i])

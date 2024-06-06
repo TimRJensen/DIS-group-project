@@ -134,10 +134,13 @@ func populate(args map[string]interface{}) error {
 		sql += sqlFromAPI(fmt.Sprintf("teams?league=%d&season=%d", leagueID, season), "teams", data) + "\n"
 		sql += sqlFromAPI(fmt.Sprintf("fixtures?league=%d&season=%d", leagueID, season), "fixtures", data)
 		sql += sqlFromLocales("translator/text", "locales", data)
-		result = []byte(result)
+		result = []byte(sql)
 	}
 
-	cmd := exec.Command("docker", "exec", "-i", c, "psql", "-U", u, "-d", d)
+	cmd := exec.Command("docker", "exec", c, "psql", "-U", u, "-d", d, "-c", fmt.Sprintf(closeContent, d))
+	cmd.Run()
+
+	cmd = exec.Command("docker", "exec", "-it", c, "psql", "-U", u, "-d", d)
 	stdin, _ := cmd.StdinPipe()
 	defer stdin.Close()
 
