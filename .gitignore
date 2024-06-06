@@ -8,3 +8,6 @@
 # Flask specific:
 **/instance
 **/.webassets-cache
+
+# dm specific
+datamanager/secrets

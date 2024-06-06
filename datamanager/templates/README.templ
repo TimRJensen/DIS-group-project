@@ -1,0 +1,17 @@
+dm command [options]
+
+Usage:
+    backup{{"\t"}}[-c <string>] [-d <string>] [-u <string>]
+    populate{{"\t"}}[-f <file>] [-c <string>] [-d <string>] [-u <string>]
+    dump{{"\t"}}[-c <string>] [-d <string>] [-u <string>] [-o <path>]
+    restore{{"\t"}}(-ls [-f <file>] | -f <file>]) [-c <string>] [-d <string>] [-u <string>]
+
+Options:
+    -c{{"\t\t"}}Name of the docker container. Defaults to "{{.c}}"
+    -d{{"\t\t"}}Name of the PostgreSQL database. Defaults to "{{.d}}"
+    -u{{"\t\t"}}Name of the PostgreSQL user. Defaults to "{{.u}}"
+    -t{{"\t\t"}}Name of a table. Defaults to all.
+    -o{{"\t\t"}}Output path. Defaults to "schema/schema.sql"
+    -ls{{"\t\t"}}Lists all or a specific backup.
+    -f{{"\t\t"}}Specifies a file to use.
+    -h, --help{{"\t"}}Shows this message.
