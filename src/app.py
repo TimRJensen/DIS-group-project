@@ -1,8 +1,2 @@
-from src import create_app, con, locale 
-
+from src import create_app
 create_app()
-con = con
-locale = locale
-
-if __name__ == "__main__":
-    None

@@ -1,15 +1,15 @@
 FROM python:3.10-alpine
 
-WORKDIR /src
+WORKDIR /app
 
 # Project files
-COPY requirements.txt /src
-COPY .env /src
-COPY ./src /src
+COPY requirements.txt .
+COPY .env .
+COPY ./src ./src
 
 # Project dependencies
 RUN pip install --upgrade pip \
     pip install -r requirements.txt
 
 # Run 
-CMD ["flask", "run"]
+CMD ["flask", "--app", "src/app.py", "run"]
