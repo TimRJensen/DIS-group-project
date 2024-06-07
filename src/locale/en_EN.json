@@ -7,7 +7,20 @@
             "1": "frontpage",
             "404": "Nothing here"
         },
-        "/": {}
+        "/": {},
+        "groups": {
+            "0": "Groups"
+        },
+        "group": {
+            "0": "Standings",
+            "1": "W",
+            "2": "D",
+            "3": "L",
+            "4": "Upcomming matches",
+            "5": "Latest matches",
+            "06": "June",
+            "07": "July"
+        }
     },
     "navbar": {
         "0": "Teams",

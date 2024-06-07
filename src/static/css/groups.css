@@ -1,0 +1,45 @@
+#groups.view {
+    align-self: center;
+    flex-flow: row wrap;
+    align-items: center;
+    padding: 50px 0;
+    gap: 50px;
+}
+
+#groups.view .group {
+    --logo-size: 32px;
+    width: 100%;
+}
+
+#groups.view .group a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+#groups.view .group .teams {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px 10px;
+}
+
+#groups.view .group .teams .header,
+#groups.view .group .teams .row {
+    display: grid;
+    grid-template-columns: var(--logo-size) 4fr repeat(3, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+    padding: 10px;
+}
+
+#groups.view .group .teams .row:hover {
+    background-color: #DFDFDF;
+    border-radius: 10px;
+}
+
+
+@media only screen and (min-width: 768px) {
+    #groups.view {width: 768px;}
+    #groups.view .group {width: 334px;--logo-size: 38px}
+    #groups.view .group .teams {column-gap: 10px;}
+}

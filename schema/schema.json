@@ -1,115 +1,350 @@
 {
     "teams": {
-        "name": "Teams",
-        "api_key": "response:team",
+        "name": "teams",
+        "api-key": "response",
+        "limit": false,
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "id",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "teams:team:id",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
             },
             {
                 "name": "name",
                 "type": "VARCHAR(64)",
-                "api_key": "name",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "teams:team:name",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": true,            
+                "dedupe": false            
             },
             {
                 "name": "code",
                 "type": "VARCHAR(8)",
-                "api_key": "code",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "teams:team:code",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,            
+                "dedupe": false            
             },
             {
                 "name": "logo",
                 "type": "VARCHAR(64)",
-                "api_key": "logo",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "teams:team:logo",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "rank",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:rank",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "points",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:points",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "goals_for",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:goals:for",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "goals_against",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:goals:against",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "wins",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:win",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "loses",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:lose",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "draws",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "groups:all:draw",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false            
+            },
+            {
+                "name": "group_id",
+                "type": "INT",
+                "api-key": "groups:team:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "groups",
+                "localize": false,
+                "dedupe": false            
             }
         ]
     },
     "groups": {
-        "name": "Groups",
-        "api_key": "response:league:standings",
+        "name": "groups",
+        "api-key": "response:league:standings",
+        "limit": 6,
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             },
             {
                 "name": "name",
                 "type": "VARCHAR(64)",
-                "api_key": "group",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
-            },
-            {
-                "name": "team_id",
-                "type": "INT",
-                "api_key": "team:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "groups:group",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": true,
+                "dedupe": true
             }
         ]
     },
     "fixtures": {
-        "name": "Fixtures",
-        "api_key": "response",
+        "name": "fixtures",
+        "api-key": "response",
+        "limit": false,
         "cols": [
             {
                 "name": "id",
                 "type": "INT",
-                "api_key": "fixture:id",
-                "primary_key": true,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "fixtures:fixture:id",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             },
             {
                 "name": "date",
                 "type": "TIMESTAMP",
-                "api_key": "fixture:date",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "fixtures:fixture:date",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             },
             {
                 "name": "venue",
                 "type": "VARCHAR(64)",
-                "api_key": "fixture:venue:name",
-                "primary_key": false,
-                "foreign_key": "",
-                "foreign_table": ""
+                "api-key": "fixtures:fixture:venue:name",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             },
             {
                 "name": "home_id",
                 "type": "INT",
-                "api_key": "teams:home:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "fixtures:teams:home:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "Teams",
+                "localize": false,
+                "dedupe": false
             },
             {
                 "name": "away_id",
                 "type": "INT",
-                "api_key": "teams:away:id",
-                "primary_key": false,
-                "foreign_key": "id",
-                "foreign_table": "Teams"
+                "api-key": "fixtures:teams:away:id",
+                "primary-key": false,
+                "foreign-key": "id",
+                "foreign-table": "Teams",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "status",
+                "type": "VARCHAR(4)",
+                "api-key": "fixtures:fixture:status:short",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "home_goals",
+                "type": "INT",
+                "api-key": "fixtures:goals:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "away_goals",
+                "type": "INT",
+                "api-key": "fixtures:goals:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "halftime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:halftime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "halftime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:halftime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "fulltime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:fulltime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "fulltime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:fulltime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "extratime_home",
+                "type": "INT",
+                "api-key": "fixtures:score:extratime:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "extratime_away",
+                "type": "INT",
+                "api-key": "fixtures:score:extratime:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "penalty_home",
+                "type": "INT",
+                "api-key": "fixtures:score:penalty:home",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            
+            {
+                "name": "penalty_away",
+                "type": "INT",
+                "api-key": "fixtures:score:penalty:away",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            }
+        ]
+    },
+    "locales": {
+        "name": "locales",
+        "api-key": "",
+        "limmit": false,
+        "cols": [
+            {
+                "name": "id",
+                "type": "VARCHAR(255)",
+                "api-key": "",
+                "primary-key": true,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
+            },
+            {
+                "name": "locale",
+                "type": "JSON",
+                "api-key": "",
+                "primary-key": false,
+                "foreign-key": "",
+                "foreign-table": "",
+                "localize": false,
+                "dedupe": false
             }
         ]
     }

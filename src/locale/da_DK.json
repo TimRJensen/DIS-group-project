@@ -1,5 +1,5 @@
 {
-    "id": "dk_DK",
+    "id": "da_DK",
     "name": "DK",
     "views": {
         "error": {
@@ -7,7 +7,20 @@
             "1": "forsiden",
             "404": "Ingenting her"
         },
-        "/": {}
+        "/": {},
+        "groups": {
+            "0": "Grupper"
+        },
+        "group": {
+            "0": "Stillinger",
+            "1": "V",
+            "2": "U",
+            "3": "T",
+            "4": "Kommende kampe",
+            "5": "Seneste kampe",
+            "06": "Juni",
+            "07": "Juli"
+        }
     },
     "navbar": {
         "0": "Hold",
