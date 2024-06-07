@@ -22,9 +22,9 @@ def create_app():
     app = Flask(__name__)
 
     app.config["locales"] = []
-    for locale in os.listdir("locale"):
+    for locale in os.listdir("src/locale"):
         app.config["locales"].append(match(r"^[a-z]{2}_([A-Z]{2}).json$", locale)[1])
-    with open("locale/en_EN.json", "r") as file:
+    with open("src/locale/en_EN.json", "r") as file:
         app.config["locale"] = json.load(file)
 
     from src.routes.index import Index
