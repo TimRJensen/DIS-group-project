@@ -137,10 +137,7 @@ func populate(args map[string]interface{}) error {
 		result = []byte(sql)
 	}
 
-	cmd := exec.Command("docker", "exec", c, "psql", "-U", u, "-d", d, "-c", fmt.Sprintf(closeContent, d))
-	cmd.Run()
-
-	cmd = exec.Command("docker", "exec", "-it", c, "psql", "-U", u, "-d", d)
+	cmd := exec.Command("docker", "exec", "-i", c, "psql", "-U", u, "-d", d)
 	stdin, _ := cmd.StdinPipe()
 	defer stdin.Close()
 

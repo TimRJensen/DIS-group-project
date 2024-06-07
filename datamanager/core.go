@@ -99,6 +99,7 @@ func (t *table) col(name string) *column {
 type localizeData struct {
 	table *table
 	col   *column
+	id    float64
 	val   string
 }
 
@@ -209,9 +210,9 @@ func sqlFromAPI(query, table string, data flatObject) string {
 			fKeys = append(fKeys, col)
 		}
 		if col.Localize {
-			for _, val := range data[col.ApiKey] {
+			for i, val := range data[col.ApiKey] {
 				data["localizations"] = append(data["localizations"], &localizeData{
-					&t, col, val.(string),
+					&t, col, data[t.col("id").ApiKey][i].(float64), val.(string),
 				})
 			}
 		}
@@ -277,11 +278,11 @@ func sqlFromLocales(query, table string, data flatObject) string {
 	}
 	queires = append(queires, txt)
 
-	items := []string{}
 	for _, locale := range locales {
 		rexp, _ := regexp.Compile(`^([a-z]{2})_[A-Z]{2,3}$`)
 		iso := rexp.FindStringSubmatch(locale["id"].(string))[1]
 
+		items := []string{}
 		for _, q := range queires {
 			if iso == "en" {
 				items = append(items, strings.Split(q, ";")...)
@@ -308,7 +309,7 @@ func sqlFromLocales(query, table string, data flatObject) string {
 			tokens := []string{
 				t.Name,
 				ld.col.Name,
-				fmt.Sprintf("%d", int(data[t.Cols[0].ApiKey][i%len(data[t.Cols[0].ApiKey])].(float64))),
+				fmt.Sprintf("%d", int(ld.id)),
 			}
 
 			l := locale
