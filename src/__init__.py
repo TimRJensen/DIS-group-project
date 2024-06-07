@@ -4,19 +4,28 @@ from psycopg import Connection
 from psycopg.rows import dict_row
 from dotenv import load_dotenv
 
-con = None
+load_dotenv(".env")
 
-try:
-    load_dotenv(".env")
-    con = Connection.connect(
-        host = os.getenv("POSTGRES_HOST"),
-        port = os.getenv("POSTGRES_PORT"),
-        dbname = os.getenv("POSTGRES_DB"),
-        user = os.getenv("POSTGRES_USER"),
-        password = os.getenv("POSTGRES_PASSWORD")
-    )
-except Exception as e:
-    exit(1)
+locale = None
+con = None
+con_config = {
+    "host": os.getenv("POSTGRES_HOST"),
+    "port":os.getenv("POSTGRES_PORT"),
+    "user": os.getenv("POSTGRES_USER"),
+    "password": os.getenv("POSTGRES_PASSWORD"),
+    "dbname": os.getenv("POSTGRES_DB"),
+}
+# try:
+#     con = Connection.connect(**con_config)
+# except Exception as e:
+#     exit(1)
+
+def connect():
+    global con
+    try:
+        con = Connection.connect(**con_config)
+    except:
+        exit(1)
 
 def create_app():
     app = Flask(__name__)
