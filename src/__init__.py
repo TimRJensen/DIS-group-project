@@ -1,7 +1,6 @@
-import os, json
-from re import match
-from flask import Flask, redirect, request, g
-from psycopg import Connection, connect
+import os, secrets
+from flask import Flask, request, session, redirect
+from psycopg import Connection
 from psycopg.rows import dict_row
 from dotenv import load_dotenv
 
@@ -21,8 +20,9 @@ except Exception as e:
 
 def create_app():
     app = Flask(__name__)
-    locales = None
-    locale
+
+    with open(os.getenv("FLASK_SECRET_PATH"), "r") as file:
+        app.secret_key = file.read().strip()
 
     from src.routes.index import Index
     from src.routes.error import Error
@@ -31,22 +31,30 @@ def create_app():
     app.register_blueprint(Error)
     app.register_blueprint(Groups)
 
+    locales = None
     with con.cursor(row_factory=dict_row) as cursor:
         locales = [row["locale"] for row in cursor.execute("SELECT * FROM locales;").fetchall()]
 
     @app.get("/locale/<iso>")
     def set_locale(iso: str):
-        global locale
         for row in locales:
             if row["id"] != iso:
                 continue
-            locale = row
+            session["locale"] = row
             break
         if request:
             return redirect(request.referrer)
+
     @app.context_processor
     def inject_locale():
-        return {"locale": locale, "locales": locales}
+        if not "locale" in session:
+            print("ehm")
+            for row in locales:
+                if row["id"] != "en_EN":
+                    continue
+                session["locale"] = row
+                break
+        return {"locale": session["locale"], "locales": locales}
 
-    set_locale("en_EN")
+
     return app

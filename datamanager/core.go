@@ -364,7 +364,7 @@ func init() {
 		json.Unmarshal(f, &schema)
 	}
 
-	if dir, err := os.ReadDir("src/locale"); err != nil {
+	if dir, err := os.ReadDir(os.Getenv("LOCALE_PATH")); err != nil {
 		panic(err)
 	} else {
 		locales = []jsonObject{}

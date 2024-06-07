@@ -9,5 +9,6 @@
 **/instance
 **/.webassets-cache
 
-# dm specific
-datamanager/secrets
+# secrets
+datamanager/secrets/api-key
+src/secrets/flask-key

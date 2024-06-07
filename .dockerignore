@@ -1,1 +1,3 @@
-__pycache__
+.git
+src/__pycache__
+src/.secrets
