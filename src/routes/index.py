@@ -11,4 +11,3 @@ def index():
         return render_template("index.html", 
             name=request.args.get("greet"), 
             psql_v=cursor.fetchone()[0])
-        
