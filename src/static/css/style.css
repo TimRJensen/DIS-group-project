@@ -390,12 +390,12 @@ a, a:visited {
 }
 
 .fixture-box .team a {
-    text-decoration: none; /* Remove underline from team links */
-    color: inherit; /* Maintain the color styling of the parent element */
+    text-decoration: none; 
+    color: inherit;
 }
 
 .fixture-box .team a:hover {
-    color: #416D19; /* Optional: Add a hover effect to indicate the link is clickable */
+    color: #416D19;
 }
 
 .fixture-box .venue,
@@ -425,7 +425,7 @@ a, a:visited {
     margin-bottom: 8px;
 }
 
-/* Styling for the details and summary elements */
+
 summary {
     cursor: pointer;
     background-color: #416D19;
