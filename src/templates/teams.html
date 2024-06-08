@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Teams - UEFA EURO 2024</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <h1>Teams</h1>
+    {% for team in teams %}
+        <div class="teams-box">
+            <h3 class="teams-id">{{ team.id }}</h3>
+            <p class="teams-name">{{ team.name }}</p>
+            <p class="teams-code">{{ team.code }}</p>
+            <img class="teams-logo" src="{{ team.logo }}"/>
+        </div>
+    {% endfor %}
+</main>
+{% endblock %}
