@@ -104,4 +104,4 @@ ORDER BY f.date;
         data["upcomming"] = [row for row in fixtures if row.status == "NS"]
         data["latest"] = [row for row in fixtures if row.status == "FT"]
         print(data["latest"])
-    return render_template("groups:id.html", **data)
+    return render_template("groups[id].html", **data)

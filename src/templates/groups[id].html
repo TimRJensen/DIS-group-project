@@ -1,0 +1,93 @@
+{% extends "base.html" %} 
+{% set text = locale["views"]["group"] %}
+{% set groups = locale["groups"]["name"] %}
+{% set teams = locale["teams"]["name"] %}
+{% block title %}
+<title>UEFA EURO 2024 {{groups[group[0]["id"]|string]}}</title>
+{% endblock title %} 
+{% block head %} 
+<link rel="stylesheet" href="/static/css/groups[id].css" />
+{% endblock %}
+{% block content %} 
+<section id="group" class="view">
+    <div class="group">
+        <div class="label">{{groups[group[0]["id"]|string]}} {{text["0"]}}</div>
+        <div class="teams">
+            <div class="header">
+                <div></div>
+                <div></div>
+                <div>{{text["1"]}}</div>
+                <div>{{text["2"]}}</div>
+                <div>{{text["3"]}}</div>
+                <div>+</div>
+                <div>-</div>
+                <div>P</div>
+            </div>
+            {% for row in group %}
+                <a href="/teams/{{row['team_id']|string}}">
+                    <div class="row">
+                        <div class="logobox">
+                            <img class="logo" src="{{row['logo']}}" data-ignore="{{row['team_id']}}"/>
+                        </div>
+                        <div class="team">{{teams[row["team_id"]|string]}}</div>
+                        <div>{{row["wins"]}}</div>
+                        <div>{{row["draws"]}}</div>
+                        <div>{{row["loses"]}}</div>
+                        <div>{{row["goals_for"]}}</div>
+                        <div>{{row["goals_against"]}}</div>
+                        <div>{{row["points"]}}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        {% if upcomming %}
+            <div class="label">{{text["4"]}}</div>
+            <div class="fixtures">
+                {% for row in upcomming %}
+                    <hr>
+                    <a href="/fixtures/{{row['fixture_id']}}">
+                        <div class="row">
+                            <div class="date">{{row["date"].strftime("%d")}} {{text[row["date"].strftime("%m")]}} {{row["date"].strftime("%H:%M")}}</div>
+                            <div class="logobox">
+                                <img class="logo" src="{{row['home_logo']}}" data-ignore="{{row['home_id']}}"/>
+                            </div>
+                            <div class="logobox">
+                                <img class="logo" src="{{row['away_logo']}}" data-ignore="{{row['away_id']}}"/>
+                            </div>
+                            <div class="team home">{{teams[row["home_id"]|string]}}</div>
+                            <div></div>
+                            <div>vs.</div>
+                            <div></div>
+                            <div class="team">{{teams[row["away_id"]|string]}}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if latest %}
+        <div class="label">{{text["5"]}}</div>
+        <div class="fixtures">
+            {% for row in latest %}
+                <hr>
+                <a href="/fixtures/{{row['fixture_id']}}">
+                    <div class="row">
+                        <div class="date">{{row["date"].strftime("%d")}} {{text[row["date"].strftime("%m")]}} {{row["date"].strftime("%H:%M")}}</div>
+                        <div class="logobox">
+                            <img class="logo" src="{{row['home_logo']}}" data-ignore="{{row['home_id']}}"/>
+                        </div>
+                        <div class="logobox">
+                            <img class="logo" src="{{row['away_logo']}}" data-ignore="{{row['away_id']}}"/>
+                        </div>
+                        <div class="team home">{{teams[row["home_id"]|string]}}</div>
+                        <div>{{row['home_goals']}}</div>
+                        <div>-</div>
+                        <div>{{row['away_goals']}}</div>
+                        <div class="team">{{teams[row["away_id"]|string]}}</div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+</section>
+{% endblock %}
