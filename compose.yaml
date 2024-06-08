@@ -21,6 +21,7 @@ services:
 
   web:
     container_name: ${WEB}
+    image:  "dis-web:dev"
     build:
       context: .
       dockerfile: .docker/flask.Dockerfile
