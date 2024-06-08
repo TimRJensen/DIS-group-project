@@ -2,7 +2,7 @@ from datetime import datetime
 from flask import Blueprint, render_template
 from dataclasses import dataclass
 from psycopg.rows import class_row
-from src.app import con
+from src import con
 
 @dataclass
 class Group:

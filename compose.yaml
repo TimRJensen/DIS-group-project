@@ -13,7 +13,7 @@ services:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
       timeout: 30s
-      retries: 5
+      retries: 3
     ports:
       - "5454:${POSTGRES_PORT}"
     networks:
@@ -24,14 +24,18 @@ services:
     build:
       context: .
       dockerfile: .docker/flask.Dockerfile
-    env_file: .env 
+    secrets:
+      - flask-key
+    env_file: .env
+    environment:
+      FLASK_SECRET_PATH: /run/secrets/flask-key 
     ports:
       - "${FLASK_RUN_PORT}:${FLASK_RUN_PORT}"
     develop:
       watch:
         - action: sync
           path: ./src
-          target: /src
+          target: /app/src
         - action: rebuild
           path: requirements.txt
     stop_signal: SIGINT
@@ -57,3 +61,7 @@ volumes:
 
 networks:
   back-end:
+
+secrets:
+  flask-key:
+    file: src/secrets/flask-key

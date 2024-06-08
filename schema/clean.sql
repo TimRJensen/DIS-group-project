@@ -1,0 +1,2 @@
+DROP DATABASE uefa2024;
+DROP USER group77;

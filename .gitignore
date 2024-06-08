@@ -8,3 +8,10 @@
 # Flask specific:
 **/instance
 **/.webassets-cache
+
+# secrets
+datamanager/secrets/api-key
+src/secrets/flask-key
+src/static/css/groupsid.css
+src/static/css/groupsid.css
+src/templates/groupsid.html

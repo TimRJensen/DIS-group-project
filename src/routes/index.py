@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from src.app import con
+from src import con
 
 Index = Blueprint("index", __name__)
 
@@ -11,4 +11,3 @@ def index():
         return render_template("index.html", 
             name=request.args.get("greet"), 
             psql_v=cursor.fetchone()[0])
-        

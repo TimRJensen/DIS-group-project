@@ -96,9 +96,31 @@ To stop the services press ctrl+c in the terminal where the services are running
  - When adding features, try to make them on a dev branch we all use or a new branch for that feature.
 
 ## Running
+### With Docker
 If you followed the setup section, you can start the application services with these commands:
 #####  Windows/Linux/ubunto:
 ```
 docker compose up -d
 ```
 Then navigate to [localhost:1234](http://localhost:1234).
+
+### Dockerless
+> [!IMPORTANT]
+> Running the application dockerless adds user "group77" and database "uefa2024" to your local PostgreSQL server.
+
+Running the application dockerless assumes:
+- A local PostgreSQL installation.
+- Root user is "postgres"
+- Root password is "postgres"
+- Server port is 5432
+
+Start the web server with:
+#####  Windows:
+```
+python run.py
+``` 
+#####  Linux/ubunto:
+```
+python3 run.py
+```
+Then navigate to [localhost:5000](http://localhost:5000). 
