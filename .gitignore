@@ -8,3 +8,7 @@
 # Flask specific:
 **/instance
 **/.webassets-cache
+
+# secrets
+datamanager/secrets/api-key
+src/secrets/flask-key

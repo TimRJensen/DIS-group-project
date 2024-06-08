@@ -1,4 +1,4 @@
-{% set text = config["locale"]["navbar"] %}
+{% set text = locale["navbar"] %}
 <section id="nav-bar">
     <div class="linkbox">
         <a class="link" href="/teams">{{text["0"]}}</a>
@@ -10,24 +10,27 @@
             <input type="text" />
         </form>
         <div class="locales" tabindex="-1">
-            {% for locale in config["locales"] %}
-                {% if locale == config["locale"]["name"] %}
-                    <a class="link" href="/locale/{{locale}}"><strong>{{locale}}</strong></a>
+            {% for row in locales %}
+                {% if row["id"] == locale["id"] %}
+                    <a class="link" href="/locale/{{row['id']}}"><strong>{{row["name"]}}</strong></a>
                 {% else %}
-                    <a class="link" href="/locale/{{locale}}" >{{locale}}</a>
+                    <a class="link" href="/locale/{{row['id']}}" >{{row["name"]}}</a>
                 {% endif %}
             {% endfor %}    
         </div>
         <button class="material-symbols-outlined button">search</button>
-        <button class="button">{{config["locale"]["name"]}}</button>
+        <button class="button">{{locale["name"]}}</button>
         <a class="link" href="/">
             <button class="material-symbols-outlined button">home</button>
         </a>
     </div>
+    <button class="material-symbols-outlined burger button">menu</button>
 </section>
 <script>(function () {
-    let searchbox = document.querySelector(".controlbox");
-    let children = Array.from(searchbox.children);
+    let burger = document.querySelector(".burger")
+    let controlbox = document.querySelector(".controlbox");
+    let linkbox = document.querySelector(".linkbox");
+    let children = Array.from(controlbox.children);
 
     for (let i = 0; i < 2; i++) {
         children[i].addEventListener("blur", (e) => {
@@ -46,5 +49,30 @@
             children[i+2].dataset["toggled"] = children[i].dataset["toggled"]= "true";
             children[i].firstElementChild.focus();
         });
-    }})()
+    }
+
+    burger.addEventListener("pointerdown", (e) => {
+        if (e.target.dataset["toggled"] == "true") {
+            e.target.innerText = "menu"
+            e.target.dataset["toggled"] = "false"
+            return
+        } 
+
+        e.target.innerText = "close"
+        e.target.dataset["toggled"] = "true"
+    })
+
+    const tokens = document.location.pathname.split("/")
+    const routes = ["teams", "groups", "fixtures"]
+
+    for (const route of routes) {
+        if (route != tokens[1]) {
+            continue
+        }
+
+        const element = document.querySelector(`.link[href="/${route}"]`)
+        element.dataset["toggled"] = "true"
+        break
+    }
+})()
 </script>

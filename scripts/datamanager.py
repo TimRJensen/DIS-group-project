@@ -8,132 +8,220 @@ however make sure that if you call an API endpoint, never do it within a loop,
 as my personal credit-card is connected to the API :)
 ~ Tim Jensen
 """
-import sys, os, re, http.client, hashlib, json 
+import sys, os, re, http.client, hashlib, json
 from subprocess import run, DEVNULL
 from dotenv import load_dotenv
 
 load_dotenv(dotenv_path=".env")
 
 # Docker specifics
-backup_volume = "dis_backups"
 backup_dir = "/backups"
 
 # API specifics
-endpoint = "api-football-v1.p.rapidapi.com"
-headers = {
-    'X-RapidAPI-Key': os.getenv("API_TOKEN"),
-    'X-RapidAPI-Host': endpoint,
-}
+endpoints = [
+    "api-football-v1.p.rapidapi.com",
+    "google-translate113.p.rapidapi.com"
+    ]
+headers = [
+    {
+        'X-RapidAPI-Key': os.getenv("API_TOKEN"),
+        'X-RapidAPI-Host': endpoints[0],
+    },
+    {
+        'X-RapidAPI-Key': os.getenv("API_TOKEN"),
+        'X-RapidAPI-Host': endpoints[1],
+        'Content-Type': "application/json"
+    }]
 league = 4
 season = 2024
 
+def fetch(method: str, endpoint: str, headers: dict[str, str], query: str = "", body: str = "" ):
+    client = http.client.HTTPSConnection(endpoint)
+    client.request(method, query, body, headers)
+    return json.loads(client.getresponse().read().decode())
+
 # Schema specifics
-cols = "cols"
-name = "name"
-type = "type"
-api_key = "api_key"
-p_key = "primary_key"
-f_key = "foreign_key"
-f_table = "foreign_table"
 schema = {}
 
 with open("schema/schema.json", "r") as file:
     schema = json.loads(file.read())
 
 # SQL generation
-def json_flatten(data: list, tokens: list[str], result: list, key=""):
-    if isinstance(data, dict):
-        if tokens:
-            json_flatten(data[tokens[0]], tokens[1:], result, tokens[0])
-        else:
-            result.append(data)
-        return result
-    elif isinstance(data, list):
+def json_flatten(data: list[dict|list], key="", result: dict[str, list]={}):
+    if isinstance(data, list):
         for item in data:
-            json_flatten(item, tokens, result, key)
-        return result
+            json_flatten(item, key, result)
+    elif isinstance(data, dict):
+        for k in data:
+            json_flatten(data[k], key + k + ":", result)
     else:
-        result.append({key: data})
-        return result
+        key = key.rstrip(":")
+        if key in result:
+            result[key].append(data)
+        else:
+            result[key] = [data] 
 
-def sql_stringify(s: str, t: str):
+    return result
+
+
+def sql_stringify(s: str|int, t: str) -> str:
     if re.match(r"^VARCHAR|^TIMESTAMP", t) != None:
         return "'" + s + "'"
-    return s
+    elif s == None:
+        if t == "INT":
+            return str(0)
+        elif re.match(r"^VARCHAR", t) != None:
+            return '""'
+        else:
+            return "NULL"
+    return str(s)
 
-def sql_generate(query: str, table: str):
+def sql_from_api(query: str, table: str, data: dict[str, list]):
     # Fetch data from the API.
-    client = http.client.HTTPSConnection(endpoint)
-    client.request("GET", query, headers=headers)
-    data =  json.loads(client.getresponse().read().decode())
+    resp = fetch("GET", endpoints[0],  headers[0], query)
 
-    if not "response" in data:
-        print(data)
+    if not "response" in resp:
+        print(resp)
         return ""
 
     # The response might have nested properties, so "flatten" it.
-    tokens = schema[table][api_key].split(":")
-    data = json_flatten(data, tokens, [])
-    items = {}
-
-    for item in data:
-        for col in schema[table][cols]:
-            # skip fields that are not part of the API.
-            if col[api_key] == "":
-                continue
-            tokens = col[api_key].split(":")
-            field = json_flatten(item, tokens, [])[0]
-            if col[api_key] in items:
-                items[col[api_key]].append(field[tokens[-1]])
-            else:
-                items[col[api_key]] = [field[tokens[-1]]]
+    tokens = schema[table]["api-key"].split(":")
+    while len(tokens):
+        if isinstance(resp, list):
+            resp = resp[0]
+            continue
+        resp = resp[tokens.pop(0)]
+    if schema[table]["limit"]:
+        resp = resp[:schema[table]["limit"]]
+    resp = json_flatten(resp, table + ":", {})
+    data.update({**resp, **data})
 
     # Create the table, insert the data and append it to the result.
-    result = f"CREATE TABLE IF NOT EXISTS {schema[table][name]} (\n"
-    p_keys = []
-    f_keys = []
-    n = len(schema[table][cols])
+    cols, rows, p_keys, f_keys = schema[table]["cols"], {}, [], []
 
-    for i in range(0, n):
-        col = schema[table][cols][i]
-        if col[p_key]:
-            p_keys.append(col[name])
-        if col[f_key]:
-            f_keys.append((col[name], col[f_key], col[f_table]))
-        if i+1 < n:
-            result += f"\t{col[name]} {col[type]},\n"
-        else:
-            result += f"\t{col[name]} {col[type]}"
-    if p_keys:
-        result += f",\n\tPRIMARY KEY ({', '.join(p_keys)})"
-    if f_keys:
-        result += "".join(
-            [f",\n\tFOREIGN KEY ({name}) REFERENCES {foreign_table} ({foreign_key})" 
-             for (name, foreign_key, foreign_table) in f_keys])
-        
-    result += "\n);\n\n"
-    result += f"INSERT INTO {schema[table][name]} "
-    result += f"({', '.join([col[name] for col in schema[table][cols]])}) "
-    result += "VALUES \n"
-    k = len(data)
-
-    for i in range(0, k):
-        for j in range (0, n):
-            col = schema[table][cols][j]
-            if col[name] == "id":
-                if col[api_key] in items:
-                    result += f"\t({items[col[api_key]][i]}, "
-                else:
-                    # Assign naive id.
-                    result += f"\t({i}, "
-            elif j+1 < n:
-                result += f"{sql_stringify(items[col[api_key]][i], col[type])}, "
-            elif i+1 < k:
-                result += f"{sql_stringify(items[col[api_key]][i], col[type])}),\n"
+    for col in cols:
+        if col["api-key"] in resp:
+            if col["dedupe"]:
+                rows[col["name"]] = list(dict.fromkeys(resp[col["api-key"]]))
             else:
-                result += f"{sql_stringify(items[col[api_key]][i], col[type])})\n"
+                rows[col["name"]] = resp[col["api-key"]]
+            if not "id" in rows:
+                rows["id"] = [i for i in range(len(rows[col["name"]]))]
+        if col["primary-key"]:
+            p_keys.append(col["name"])
+        if col["foreign-table"]:
+            f_keys.append((col["name"], col["foreign-table"], col["foreign-key"]))
+        if col["localize"]:
+            for i, item in enumerate(rows[col["name"]]):
+                data["localizations"].append(("{0}:{1}:{2}".format(table, col["name"], rows["id"][i]), item))
 
-    return result + " ON CONFLICT DO NOTHING;\n"
+    result = "BEGIN;\n\n"
+    result += "CREATE TABLE IF NOT EXISTS {0} (\n{1}\n);\n\n".format(
+        schema[table]["name"],
+        ",\n".join(
+            ["\t{name} {type}".format(**col) for col in cols] +
+            ["\tPRIMARY KEY ({0})".format(", ".join(p_keys))] +
+            ["\tFOREIGN KEY ({0}) REFERENCES {1} ({2}) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED".format(*f_key) for f_key in f_keys]
+        )   
+    )
+    result += "INSERT INTO {0} ({1}) VALUES\n{2}\nON CONFLICT (id) DO UPDATE SET\n{3}\n;\n\n".format(
+        schema[table]["name"], 
+        ", ".join([col["name"] for col in cols if col["name"] in rows]),
+        ",\n".join([
+            "\t({0})".format(", ".join([
+                sql_stringify(rows[col["name"]][i], col["type"]) for col in cols if col["name"] in rows
+            ]))
+            for i in range(len(rows["id"]))            
+        ]),
+        ",\n".join(["\t{0} = EXCLUDED.{0}".format(col["name"]) for col in cols[1:] if col["name"] in rows]),
+    )
+
+    for col in cols:
+        if col["name"] in rows:
+            continue
+        row = None
+        if col["foreign-table"]:
+            row = data["rows"][col["foreign-table"]][col["foreign-key"]]
+        else:
+            row = data[col["foreign-key"]]
+        result += "{0}\n\n".format(
+            "\n".join([
+                "UPDATE {0} SET {1} = {2} WHERE (id) = {3};".format(
+                    schema[table]["name"], 
+                    col["name"],
+                    sql_stringify(row[i//(len(data[col["api-key"]])//len(row))], col["type"]),
+                    lid
+                ) 
+                for lid in rows["id"] 
+                for i, fid in enumerate(data[col["api-key"]]) if fid == lid
+            ])
+        )
+
+    data["rows"][table] = rows
+
+    return result + "COMMIT;\n\n"
+
+def sql_from_locales(data: dict[str, tuple[str]],):
+    # Get manual localizations.
+    cols, locales = schema["locales"]["cols"], []
+
+    items = []
+    for file in os.listdir("./src/locale"):
+        with open (f"./src/locale/{file}", "r") as locale:
+            locales.append(json.load(locale))
+
+    query, queries = ";".join([s[1] for s in data["localizations"]]), []
+    if len(query) > 500: # Hard limit from API
+        i = query[0:500].rfind(";")
+        queries.append(query[:i])
+        query = query[i+1:]
+    queries.append(query)
+
+    for locale in locales:
+        iso = re.match(r"^([a-z]{2})_[A-Z]{2,3}$", locale["id"])
+        if not iso:
+            continue
+        # Fetch data for this locale.
+        items = []
+        for query in queries:
+            if iso[1] == "en":
+                items += query.split(";")
+                continue
+            resp = fetch("POST", endpoints[1],  headers[1], "/api/v1/translator/text", json.dumps({"from": "en", "to": iso[1], "text": query}))
+            if not "trans" in resp:
+                print(resp)
+                return ""
+            items += resp["trans"].split(";")
+        for i, s in enumerate(data["localizations"]):
+            tokens = s[0].split(":")
+            l = locale
+            while len(tokens) > 1:
+                l = l.setdefault(tokens.pop(0), {})
+            l[tokens[0]] = items[i]
+
+    result = "BEGIN;\n\n"
+    result += "CREATE TABLE IF NOT EXISTS {0} (\n{1}\n);\n\n".format(
+        schema["locales"]["name"],
+        ",\n".join(
+            ["\t{name} {type}".format(**col) for col in cols] +
+            ["\tPRIMARY KEY (id)"]       
+        ),
+    )
+
+    result += "INSERT INTO {0} ({1}) VALUES\n{2} ON CONFLICT (id) DO UPDATE SET\n{3};\n\n".format(
+        schema["locales"]["name"],
+        ", ".join([col["name"] for col in cols]),
+        ",\n".join([
+            "\t({0})".format(",".join([
+                "'{0}'".format(locale["id"] if col["name"] == "id" else json.dumps(locale))
+                 for col in cols
+                ]))
+            for locale in locales
+        ]),
+        ",\n".join(["\t{0} = EXCLUDED.{0}".format(col["name"]) for col in cols[1:]]),
+    )
+
+    return result + "COMMIT;\n\n"
 
 def backup(args: dict):
     cmd = ["docker", "exec", f"{args['-c']}", "sh", "-c"]
@@ -163,18 +251,17 @@ def populate(args: dict):
         return 1
 
     # Generate data and write to db.
-    result = ""
-
     if args["-f"]:
         with open(args["-f"], "r") as file:
             result = file.read()
     else:
-        result = sql_generate(f"/v3/teams?league={league}&season={season}", "teams") + "\n"
-        result += sql_generate(f"/v3/standings?league={league}&season={season}", "groups") + "\n"
-        result += sql_generate(f"/v3/fixtures?league={league}&season={season}", "fixtures")
+        data = {"rows": {}, "localizations": []}
+        result = sql_from_api(f"/v3/standings?league={league}&season={season}", "groups", data) 
+        result += sql_from_api(f"/v3/teams?league={league}&season={season}", "teams", data) 
+        result += sql_from_api(f"/v3/fixtures?league={league}&season={season}", "fixtures", data) 
+        result += sql_from_locales(data)
 
-    p = run(["docker", "exec", f"{args['-c']}", "sh", "-c", f'echo "{result}" | psql -U {args["-u"]} -d {args["-d"]}'], stdout=DEVNULL, stderr=DEVNULL)
-
+    p = run(["docker", "exec", "-i", args["-c"], "psql", "-U", args["-u"], "-d", args["-d"]], input=result, text=True)
     if p.returncode:
         print(f"exiting: failed to populate \"{args['-d']}\".")
         return 1
@@ -187,8 +274,7 @@ def dump(args: dict):
     path = os.path.abspath(args["-o"])
     dir = os.path.dirname(path)
     file = os.path.basename(path)
-    p = run(["docker", "exec", f"{args['-c']}", "sh", "-c", f"pg_dump -U {args['-u']} -d {args['-d']} | cat"], capture_output=True)
-
+    p = run(["docker", "exec", f"{args['-c']}", "sh", "-c", f"pg_dump -U {args['-u']} -t \'{args['-t']}\' -c --if-exists {args['-d']} | cat"], capture_output=True)
     if p.returncode:
         print(f"exiting: failed to dump \"{file}\".")
         return 1
@@ -241,14 +327,17 @@ if __name__ == "__main__":
         "-d": os.getenv("POSTGRES_DB"), 
         "-u": os.getenv("POSTGRES_USER"),
         "-o": "schema/schema.sql",
-        "-f": ""
-        }
+        "-t": "*",
+        "-f": "",
+        "-t": "public.*",
+        "-f": "",
+    }
 
     if len(sys.argv) > 1:
         command = sys.argv[1]
     if len(sys.argv) > 2:
         for i in range(2, len(sys.argv)):
-            if re.match(r"^-([cdfou])$", sys.argv[i]) != None:
+            if re.match(r"^-([cduotf])$", sys.argv[i]) != None:
                 args[sys.argv[i]] = sys.argv[i+1]
             elif re.match(r"^-ls$", sys.argv[i]):
                 args[sys.argv[i]] = True
@@ -278,6 +367,8 @@ Options:
     -c\t\tName of the docker container. Defaults to "{args['-c']}"
     -d\t\tName of the PostgreSQL database. Defaults to "{args['-d']}"
     -u\t\tName of the PostgreSQL user. Defaults to "{args['-u']}"
+    -t\t\tName of a table. Defaults to all.
+    -t\t\tName of a table. Defaults to all.
     -o\t\tOutput path. Defaults to "schema/schema.sql"
     -ls\t\tLists all or a specific backup.
     -f\t\tSpecifies a file to use.

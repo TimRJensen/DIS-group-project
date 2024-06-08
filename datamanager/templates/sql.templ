@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS {{.Table.Name}} (
+    {{range $i, $col := .Cols}}{{$col.Name}} {{$col.Type}}{{if lt $i (sub (len $.Cols) 1)}},
+    {{end}}{{end}}{{if .PKeys}},
+    PRIMARY KEY ({{range $i, $col := .PKeys}}{{$col.Name}}{{if lt $i (sub (len $.PKeys) 1)}}, {{end}}{{end}}){{end}}{{if .FKeys}},
+    {{range $i, $col := .FKeys}}FOREIGN KEY ({{$col.Name}}) REFERENCES {{$col.FTable}}({{$col.FKey}}) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED{{if lt $i (sub (len $.FKeys) 1)}},
+    {{end}}{{end}}{{end}}
+);
+
+CREATE OR REPLACE FUNCTION force_{{.Table.Name}}_defaults()
+    RETURNS trigger
+    LANGUAGE plpgsql AS
+$func$
+BEGIN
+    {{range slice .Cols 1}}IF NEW.{{.Name}} IS NULL THEN
+        NEW.{{.Name}} := {{if eq .Type "INT"}}0{{else if (match .Type)}}''{{else if eq .Type "BOOLEAN"}}FALSE{{else}}NULL{{end}};
+    END IF;
+    {{end}}RETURN NEW;
+END
+$func$;
+
+DROP TRIGGER IF EXISTS {{.Table.Name}}_before_insert ON {{.Table.Name}};
+CREATE TRIGGER {{.Table.Name}}_before_insert
+BEFORE INSERT ON {{.Table.Name}}
+FOR EACH ROW
+EXECUTE FUNCTION force_{{.Table.Name}}_defaults();
+
+BEGIN;
+{{$id := index .Cols 0}}
+INSERT INTO {{.Table.Name}} ({{range $i, $col := .Cols}}{{$col.Name}}{{if lt $i (sub (len $.Cols) 1)}}, {{end}}{{end}}) VALUES
+    {{range $i, $val := row $id}}({{range $j, $col := $.Cols}}{{item $col $i}}{{if lt $j (sub (len $.Cols) 1)}}, {{end}}{{end}}){{if lt $i (sub (len (row $id)) 1)}},
+    {{end}}{{end}}
+ON CONFLICT (id) DO UPDATE SET
+    {{range $i, $col := slice .Cols 1}}{{$col.Name}} = EXCLUDED.{{$col.Name}}{{if lt $i (sub (len $.Cols) 2)}}, 
+    {{else}};{{end}}{{end}}
+COMMIT;

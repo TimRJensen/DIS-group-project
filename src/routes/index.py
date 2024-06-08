@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request
-from src.app import con
+from src import con
 
 Index = Blueprint("index", __name__)
 

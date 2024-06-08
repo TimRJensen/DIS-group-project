@@ -2,4 +2,4 @@
 	clean
 
 clean:
-	rm -rf src/__pycache__ .venv.
+	rm -rf src/__pycache__ .venv

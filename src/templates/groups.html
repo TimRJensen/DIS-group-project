@@ -1,0 +1,43 @@
+{% extends "base.html" %} 
+{% set text = locale["views"]["groups"] %}
+{% set groups = locale["groups"]["name"] %}
+{% set teams = locale["teams"]["name"] %}
+{% block title %}
+<title>UEFA EURO 2024 {{text["0"]}}</title>
+{% endblock title %} 
+{% block head %} 
+<link rel="stylesheet" href="/static/css/groups.css" />
+{% endblock %}
+{% block content %} 
+<section id="groups" class="view">
+    {% for row in data %}
+        <div class="group">
+            <a href="/groups/{{row['id']|string}}">
+                <div class="label">{{groups[row["id"]|string]}}</div>
+            </a>
+            <div class="teams">
+                <div class="header">
+                    <div></div>
+                    <div></div>
+                    <div>P</div>
+                    <div>+</div>
+                    <div>-</div>
+                </div>
+                {% for team in row["teams"] %}
+                    <a href="/teams/{{team|string}}">
+                        <div class="row">
+                            <div class="logobox">
+                                <img class="logo" src="{{row['logoes'][loop.index0]}}" data-ignore="{{team}}"/>
+                            </div>
+                            <div class="team">{{teams[team|string]}}</div>
+                            <div>{{row["goals_for"][loop.index0]}}</div>
+                            <div>{{row["goals_against"][loop.index0]}}</div>
+                            <div class="points">{{row["points"][loop.index0]}}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</section>
+{% endblock %}
