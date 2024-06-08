@@ -15,10 +15,6 @@ con_config = {
     "password": os.getenv("POSTGRES_PASSWORD"),
     "dbname": os.getenv("POSTGRES_DB"),
 }
-# try:
-#     con = Connection.connect(**con_config)
-# except Exception as e:
-#     exit(1)
 
 def connect():
     global con
@@ -59,13 +55,11 @@ def create_app():
     @app.context_processor
     def inject_locale():
         if not "locale" in session:
-            print("ehm")
             for row in locales:
                 if row["id"] != "en_EN":
                     continue
                 session["locale"] = row
                 break
         return {"locale": session["locale"], "locales": locales}
-
 
     return app
