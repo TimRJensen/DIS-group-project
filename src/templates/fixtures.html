@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Fixtures - UEFA EURO 2024</title>
+{% endblock %}
+
+{% block content %}
+<main>
+    <h1>Fixtures</h1>
+    {% for date, fixtures in fixtures_by_date.items() %}
+        <details class="fixture-date" open>
+            <summary class="date-header">{{ date }}</summary>
+            <div class="fixtures-group">
+                {% for fixture in fixtures %}
+                    <div class="fixture-box">
+                        <div class="teams">
+                            <a href="/teams/{{ fixture.home_id }}" class="team">
+                                <img src="{{ fixture.home_logo }}" alt="{{ fixture.home_name }} flag" class="team-flag">
+                                <h3 class="home-team">{{ fixture.home_name }}</h3>
+                            </a>
+                            <span class="vs">vs</span>
+                            <a href="/teams/{{ fixture.away_id }}" class="team">
+                                <img src="{{ fixture.away_logo }}" alt="{{ fixture.away_name }} flag" class="team-flag">
+                                <h3 class="away-team">{{ fixture.away_name }}</h3>
+                            </a>
+                        </div>
+                        <p class="date">{{ fixture.date.strftime('%H:%M:%S') }}</p>
+                        <p class="venue">{{ fixture.venue }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </details>
+    {% endfor %}
+</main>
+{% endblock %}

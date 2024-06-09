@@ -1,5 +1,6 @@
 /* Google stuff */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 
 .material-symbols-outlined {
     font-variation-settings:
@@ -334,6 +335,109 @@ body {
     #nav-bar .linkbox:has(~ .burger.button[data-toggled=true]) {width: unset;}
     #groups.view .group {border: 2px solid var(--color-secondary);}
     #group.view .group {border: 2px solid var(--color-secondary);}
+}
+
+
+/* Removes underline from Fixtures team button*/
+a, a:visited {
+    color: #0000EE;
+    text-decoration: none;
+}
+
+
+/* Fixture specifics */
+.fixture-box {
+    font-family: "DM Serif Display", serif;
+    font-size: 1rem;
+    color: #000000;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.fixture-box h3 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.fixture-box p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.fixture-box .teams {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+}
+
+.fixture-box .team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 10px;
+}
+
+.fixture-box .team a {
+    text-decoration: none; 
+    color: inherit;
+}
+
+.fixture-box .team a:hover {
+    color: #416D19;
+}
+
+.fixture-box .venue,
+.fixture-box .date {
+    font-size: 1.1rem;
+    color: #000000;
+    text-align: center;
+}
+
+.vs {
+    font-size: 1.2rem;
+    margin: 0 20px;
+    align-self: center;
+}
+
+.home-team {
+    color: #1E90FF;
+}
+
+.away-team {
+    color: #FF4500;
+}
+
+.team-flag {
+    width: 48px;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+
+summary {
+    cursor: pointer;
+    background-color: #416D19;
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    outline: none;
+}
+
+summary:hover {
+    background-color: #BFEA7C;
 }
 
 

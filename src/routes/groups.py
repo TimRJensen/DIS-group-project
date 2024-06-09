@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil import tz
 from flask import Blueprint, render_template
 from dataclasses import dataclass
 from psycopg.rows import class_row
@@ -100,8 +101,12 @@ JOIN (fixtures f
 WHERE g.id = {0}
 ORDER BY f.date;
 """.format(id))
+        from_zone = tz.tzutc()
+        to_zone = tz.gettz("CET")
         fixtures = cursor.fetchall()
+        for item in fixtures:
+            item.date = item.date.replace(tzinfo=from_zone)
+            item.date = item.date.astimezone(to_zone)
         data["upcomming"] = [row for row in fixtures if row.status == "NS"]
         data["latest"] = [row for row in fixtures if row.status == "FT"]
-        print(data["latest"])
-    return render_template("groups:id.html", **data)
+    return render_template("groups[id].html", **data)

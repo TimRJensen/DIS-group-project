@@ -11,7 +11,6 @@ def index():
         return render_template("index.html", 
             name=request.args.get("greet"), 
             psql_v=cursor.fetchone()[0])
-        
 @Index.route('/teams')
 def teams():
     config = {
