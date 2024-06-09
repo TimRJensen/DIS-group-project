@@ -1,0 +1,70 @@
+/* Fixtures specifics */
+.teams {
+    --logo-size: 5rem;
+}
+
+
+.teams.container {
+    font-family: 'Silkscreen', sans-serif;
+    border: 1px solid #ddd;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #f9f9f9;
+    border-color: blue;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+}
+.teams.col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.teams.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.teams.row.end {
+    justify-content: flex-end;
+}
+
+.teams.container .box {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.teams.label {
+    margin: 0 1rem;
+    color: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+
+
+.teams.logo-container {
+    height: 3rem;
+    height: 3rem;
+    aspect-ratio: 1.65/1;
+
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.teams.box img {
+    object-fit: cover;
+    width: var(--logo-size);
+}
