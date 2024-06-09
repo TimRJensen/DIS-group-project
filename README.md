@@ -15,6 +15,7 @@ Repository for the group project in the course [Databases and Information System
 	 - [Guidelines](#Guidelines)
  - [Running](#Running)
  - [E/R Diagram](#er-diagram)
+ - [Usage](#Usage)
 
 ## Setup
 ### Requirements
@@ -37,6 +38,8 @@ pip --version
 docker --version
 ```
 ### Initialization
+> [!NOTE]
+> The project comes with PGAdmin and that is not a lightweight container. For teachers and TAs a more suitable  `compose.prod.yaml` compose file has been provided which omits PGAdmin.
 #####  Windows:
 ```
 git clone git@github.com:TimRJensen/dis-group-project.git
@@ -44,6 +47,8 @@ cd dis-group-project
 mkdir src\secrets
 python -c "import secrets;print(secrets.token_hex())" > src\secrets\flask-key
 docker compose up -d
+# without PGAdmin
+docker compose -f compose.prod.yaml up -d
 ```
 #####  Linux/ubunto:
 ```
@@ -52,6 +57,8 @@ cd dis-group-project
 mkdir src/secrets
 python3 -c "import secrets;print(secrets.token_hex())" > src/secrets/flask-key
 docker compose up -d
+# without PGAdmin
+docker compose -f compose.prod.yaml up -d
 ```
 Confirm that the database is running with the following command:
 ```
@@ -136,4 +143,9 @@ Then navigate to [localhost:5000](http://localhost:5000).
 
 ## E/R Diagram
 ![er](https://github.com/TimRJensen/dis-group-project/assets/23018442/dbfb3fe9-8d92-4e71-bd44-89ee1cc2e789)
+
+## Usage
+The application is intended to be a statistical overview of the upcomming UEFA European Championship. As this is a future event, the data available to us are quite sparse. As of now it only reflect the group stages and fixtures, 
+but as data becomes more readily available the database could easily be extended with the new data. As for interaction, it is for the most parts navigation between different segments of the application, by referencing the unique id
+each entity has. We did however also add a search function, that will yield any fixtures that matches a teams name across localization. For example "ger dan" would yield fixtures for Denmark and Germany.
 
