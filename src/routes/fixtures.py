@@ -23,6 +23,13 @@ Fixtures = Blueprint("fixtures", __name__, url_prefix="/")
 @Fixtures.get("/")
 @Fixtures.get("/index")
 def fixtures():
+    return render_fixtures_page()
+
+@Fixtures.get("/fixtures/<int:id>")
+def fixture_id(id: int):
+    return render_fixtures_page(scroll_to_id=id)
+
+def render_fixtures_page(scroll_to_id=None):
     fixtures_by_date = defaultdict(list)
     with con.cursor(row_factory=class_row(Fixture)) as cursor:
         cursor.execute("""
@@ -61,4 +68,4 @@ def fixtures():
             date_str = fixture_data["date"].strftime("%Y-%m-%d")
             fixtures_by_date[date_str].append(fixture_data)
 
-    return render_template("fixtures.html", fixtures_by_date=fixtures_by_date)
+    return render_template("fixtures.html", fixtures_by_date=fixtures_by_date, scroll_to_id=scroll_to_id)
