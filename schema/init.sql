@@ -16,6 +16,13 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+ALTER TABLE IF EXISTS ONLY public.teams DROP CONSTRAINT IF EXISTS teams_group_id_fkey;
+ALTER TABLE IF EXISTS ONLY public.fixtures DROP CONSTRAINT IF EXISTS fixtures_home_id_fkey;
+ALTER TABLE IF EXISTS ONLY public.fixtures DROP CONSTRAINT IF EXISTS fixtures_away_id_fkey;
+DROP TRIGGER IF EXISTS teams_before_insert ON public.teams;
+DROP TRIGGER IF EXISTS locales_before_insert ON public.locales;
+DROP TRIGGER IF EXISTS groups_before_insert ON public.groups;
+DROP TRIGGER IF EXISTS fixtures_before_insert ON public.fixtures;
 ALTER TABLE IF EXISTS ONLY public.teams DROP CONSTRAINT IF EXISTS teams_pkey;
 ALTER TABLE IF EXISTS ONLY public.locales DROP CONSTRAINT IF EXISTS locales_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
@@ -24,6 +31,154 @@ DROP TABLE IF EXISTS public.teams;
 DROP TABLE IF EXISTS public.locales;
 DROP TABLE IF EXISTS public.groups;
 DROP TABLE IF EXISTS public.fixtures;
+DROP FUNCTION IF EXISTS public.force_teams_defaults();
+DROP FUNCTION IF EXISTS public.force_locales_defaults();
+DROP FUNCTION IF EXISTS public.force_groups_defaults();
+DROP FUNCTION IF EXISTS public.force_fixtures_defaults();
+--
+-- Name: force_fixtures_defaults(); Type: FUNCTION; Schema: public; Owner: group77
+--
+
+CREATE FUNCTION public.force_fixtures_defaults() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.date IS NULL THEN
+        NEW.date := NULL;
+    END IF;
+    IF NEW.venue IS NULL THEN
+        NEW.venue := NULL;
+    END IF;
+    IF NEW.home_id IS NULL THEN
+        NEW.home_id := 0;
+    END IF;
+    IF NEW.away_id IS NULL THEN
+        NEW.away_id := 0;
+    END IF;
+    IF NEW.status IS NULL THEN
+        NEW.status := NULL;
+    END IF;
+    IF NEW.home_goals IS NULL THEN
+        NEW.home_goals := 0;
+    END IF;
+    IF NEW.away_goals IS NULL THEN
+        NEW.away_goals := 0;
+    END IF;
+    IF NEW.halftime_home IS NULL THEN
+        NEW.halftime_home := 0;
+    END IF;
+    IF NEW.halftime_away IS NULL THEN
+        NEW.halftime_away := 0;
+    END IF;
+    IF NEW.fulltime_home IS NULL THEN
+        NEW.fulltime_home := 0;
+    END IF;
+    IF NEW.fulltime_away IS NULL THEN
+        NEW.fulltime_away := 0;
+    END IF;
+    IF NEW.extratime_home IS NULL THEN
+        NEW.extratime_home := 0;
+    END IF;
+    IF NEW.extratime_away IS NULL THEN
+        NEW.extratime_away := 0;
+    END IF;
+    IF NEW.penalty_home IS NULL THEN
+        NEW.penalty_home := 0;
+    END IF;
+    IF NEW.penalty_away IS NULL THEN
+        NEW.penalty_away := 0;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.force_fixtures_defaults() OWNER TO group77;
+
+--
+-- Name: force_groups_defaults(); Type: FUNCTION; Schema: public; Owner: group77
+--
+
+CREATE FUNCTION public.force_groups_defaults() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.name IS NULL THEN
+        NEW.name := NULL;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.force_groups_defaults() OWNER TO group77;
+
+--
+-- Name: force_locales_defaults(); Type: FUNCTION; Schema: public; Owner: group77
+--
+
+CREATE FUNCTION public.force_locales_defaults() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.locale IS NULL THEN
+        NEW.locale := NULL;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.force_locales_defaults() OWNER TO group77;
+
+--
+-- Name: force_teams_defaults(); Type: FUNCTION; Schema: public; Owner: group77
+--
+
+CREATE FUNCTION public.force_teams_defaults() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NEW.name IS NULL THEN
+        NEW.name := NULL;
+    END IF;
+    IF NEW.code IS NULL THEN
+        NEW.code := NULL;
+    END IF;
+    IF NEW.logo IS NULL THEN
+        NEW.logo := NULL;
+    END IF;
+    IF NEW.rank IS NULL THEN
+        NEW.rank := 0;
+    END IF;
+    IF NEW.points IS NULL THEN
+        NEW.points := 0;
+    END IF;
+    IF NEW.goals_for IS NULL THEN
+        NEW.goals_for := 0;
+    END IF;
+    IF NEW.goals_against IS NULL THEN
+        NEW.goals_against := 0;
+    END IF;
+    IF NEW.wins IS NULL THEN
+        NEW.wins := 0;
+    END IF;
+    IF NEW.loses IS NULL THEN
+        NEW.loses := 0;
+    END IF;
+    IF NEW.draws IS NULL THEN
+        NEW.draws := 0;
+    END IF;
+    IF NEW.group_id IS NULL THEN
+        NEW.group_id := 0;
+    END IF;
+    RETURN NEW;
+END
+$$;
+
+
+ALTER FUNCTION public.force_teams_defaults() OWNER TO group77;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -34,7 +189,7 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.fixtures (
     id integer NOT NULL,
-    date timestamp without time zone,
+    date timestamp with time zone,
     venue character varying(64),
     home_id integer,
     away_id integer,
@@ -105,42 +260,42 @@ ALTER TABLE public.teams OWNER TO group77;
 --
 
 COPY public.fixtures (id, date, venue, home_id, away_id, status, home_goals, away_goals, halftime_home, halftime_away, fulltime_home, fulltime_away, extratime_home, extratime_away, penalty_home, penalty_away) FROM stdin;
-1145509	2024-06-14 19:00:00	Fußball Arena München	25	1108	NS	0	0	0	0	0	0	0	0	0	0
-1145510	2024-06-15 13:00:00	Cologne Stadium	769	15	NS	0	0	0	0	0	0	0	0	0	0
-1145511	2024-06-15 16:00:00	Olympiastadion Berlin	9	3	NS	0	0	0	0	0	0	0	0	0	0
-1145512	2024-06-15 19:00:00	BVB Stadion Dortmund	768	778	NS	0	0	0	0	0	0	0	0	0	0
-1145513	2024-06-16 16:00:00	Stuttgart Arena	1091	21	NS	0	0	0	0	0	0	0	0	0	0
-1145514	2024-06-16 19:00:00	Arena AufSchalke	14	10	NS	0	0	0	0	0	0	0	0	0	0
-1145515	2024-06-17 19:00:00	Düsseldorf Arena	775	2	NS	0	0	0	0	0	0	0	0	0	0
-1145516	2024-06-17 16:00:00	Frankfurt Arena	1	773	NS	0	0	0	0	0	0	0	0	0	0
-1145517	2024-06-18 19:00:00	Leipzig Stadium	27	770	NS	0	0	0	0	0	0	0	0	0	0
-1145518	2024-06-19 19:00:00	Cologne Stadium	1108	15	NS	0	0	0	0	0	0	0	0	0	0
-1145519	2024-06-19 16:00:00	Stuttgart Arena	25	769	NS	0	0	0	0	0	0	0	0	0	0
-1145520	2024-06-19 13:00:00	Volksparkstadion	3	778	NS	0	0	0	0	0	0	0	0	0	0
-1145521	2024-06-20 19:00:00	Arena AufSchalke	9	768	NS	0	0	0	0	0	0	0	0	0	0
-1145522	2024-06-20 16:00:00	Frankfurt Arena	21	10	NS	0	0	0	0	0	0	0	0	0	0
-1145523	2024-06-20 13:00:00	Fußball Arena München	1091	14	NS	0	0	0	0	0	0	0	0	0	0
-1145524	2024-06-21 19:00:00	Leipzig Stadium	1118	2	NS	0	0	0	0	0	0	0	0	0	0
-1145525	2024-06-22 19:00:00	Cologne Stadium	1	774	NS	0	0	0	0	0	0	0	0	0	0
-1145526	2024-06-22 16:00:00	BVB Stadion Dortmund	777	27	NS	0	0	0	0	0	0	0	0	0	0
-1145527	2024-06-23 19:00:00	Frankfurt Arena	15	25	NS	0	0	0	0	0	0	0	0	0	0
-1145528	2024-06-23 19:00:00	Stuttgart Arena	1108	769	NS	0	0	0	0	0	0	0	0	0	0
-1145529	2024-06-24 19:00:00	Leipzig Stadium	3	768	NS	0	0	0	0	0	0	0	0	0	0
-1145530	2024-06-24 19:00:00	Düsseldorf Arena	778	9	NS	0	0	0	0	0	0	0	0	0	0
-1145531	2024-06-25 19:00:00	Cologne Stadium	10	1091	NS	0	0	0	0	0	0	0	0	0	0
-1145532	2024-06-25 19:00:00	Fußball Arena München	21	14	NS	0	0	0	0	0	0	0	0	0	0
-1145533	2024-06-25 16:00:00	Olympiastadion Berlin	1118	775	NS	0	0	0	0	0	0	0	0	0	0
-1145534	2024-06-26 16:00:00	Frankfurt Arena	773	774	NS	0	0	0	0	0	0	0	0	0	0
-1145535	2024-06-26 19:00:00	Volksparkstadion	770	777	NS	0	0	0	0	0	0	0	0	0	0
-1189846	2024-06-16 13:00:00	Volksparkstadion	24	1118	NS	0	0	0	0	0	0	0	0	0	0
-1189847	2024-06-17 13:00:00	Fußball Arena München	774	772	NS	0	0	0	0	0	0	0	0	0	0
-1189848	2024-06-18 16:00:00	BVB Stadion Dortmund	777	1104	NS	0	0	0	0	0	0	0	0	0	0
-1189849	2024-06-21 13:00:00	Düsseldorf Arena	773	772	NS	0	0	0	0	0	0	0	0	0	0
-1189850	2024-06-21 16:00:00	Olympiastadion Berlin	24	775	NS	0	0	0	0	0	0	0	0	0	0
-1189851	2024-06-22 13:00:00	Volksparkstadion	1104	770	NS	0	0	0	0	0	0	0	0	0	0
-1189852	2024-06-25 16:00:00	BVB Stadion Dortmund	2	24	NS	0	0	0	0	0	0	0	0	0	0
-1189853	2024-06-26 16:00:00	Stuttgart Arena	772	1	NS	0	0	0	0	0	0	0	0	0	0
-1189854	2024-06-26 19:00:00	Arena AufSchalke	1104	27	NS	0	0	0	0	0	0	0	0	0	0
+1145509	2024-06-14 19:00:00+00	Fußball Arena München	25	1108	NS	0	0	0	0	0	0	0	0	0	0
+1145510	2024-06-15 13:00:00+00	Cologne Stadium	769	15	NS	0	0	0	0	0	0	0	0	0	0
+1145511	2024-06-15 16:00:00+00	Olympiastadion Berlin	9	3	NS	0	0	0	0	0	0	0	0	0	0
+1145512	2024-06-15 19:00:00+00	BVB Stadion Dortmund	768	778	NS	0	0	0	0	0	0	0	0	0	0
+1145513	2024-06-16 16:00:00+00	Stuttgart Arena	1091	21	NS	0	0	0	0	0	0	0	0	0	0
+1145514	2024-06-16 19:00:00+00	Arena AufSchalke	14	10	NS	0	0	0	0	0	0	0	0	0	0
+1145515	2024-06-17 19:00:00+00	Düsseldorf Arena	775	2	NS	0	0	0	0	0	0	0	0	0	0
+1145516	2024-06-17 16:00:00+00	Frankfurt Arena	1	773	NS	0	0	0	0	0	0	0	0	0	0
+1145517	2024-06-18 19:00:00+00	Leipzig Stadium	27	770	NS	0	0	0	0	0	0	0	0	0	0
+1145518	2024-06-19 19:00:00+00	Cologne Stadium	1108	15	NS	0	0	0	0	0	0	0	0	0	0
+1145519	2024-06-19 16:00:00+00	Stuttgart Arena	25	769	NS	0	0	0	0	0	0	0	0	0	0
+1145520	2024-06-19 13:00:00+00	Volksparkstadion	3	778	NS	0	0	0	0	0	0	0	0	0	0
+1145521	2024-06-20 19:00:00+00	Arena AufSchalke	9	768	NS	0	0	0	0	0	0	0	0	0	0
+1145522	2024-06-20 16:00:00+00	Frankfurt Arena	21	10	NS	0	0	0	0	0	0	0	0	0	0
+1145523	2024-06-20 13:00:00+00	Fußball Arena München	1091	14	NS	0	0	0	0	0	0	0	0	0	0
+1145524	2024-06-21 19:00:00+00	Leipzig Stadium	1118	2	NS	0	0	0	0	0	0	0	0	0	0
+1145525	2024-06-22 19:00:00+00	Cologne Stadium	1	774	NS	0	0	0	0	0	0	0	0	0	0
+1145526	2024-06-22 16:00:00+00	BVB Stadion Dortmund	777	27	NS	0	0	0	0	0	0	0	0	0	0
+1145527	2024-06-23 19:00:00+00	Frankfurt Arena	15	25	NS	0	0	0	0	0	0	0	0	0	0
+1145528	2024-06-23 19:00:00+00	Stuttgart Arena	1108	769	NS	0	0	0	0	0	0	0	0	0	0
+1145529	2024-06-24 19:00:00+00	Leipzig Stadium	3	768	NS	0	0	0	0	0	0	0	0	0	0
+1145530	2024-06-24 19:00:00+00	Düsseldorf Arena	778	9	NS	0	0	0	0	0	0	0	0	0	0
+1145531	2024-06-25 19:00:00+00	Cologne Stadium	10	1091	NS	0	0	0	0	0	0	0	0	0	0
+1145532	2024-06-25 19:00:00+00	Fußball Arena München	21	14	NS	0	0	0	0	0	0	0	0	0	0
+1145533	2024-06-25 16:00:00+00	Olympiastadion Berlin	1118	775	NS	0	0	0	0	0	0	0	0	0	0
+1145534	2024-06-26 16:00:00+00	Frankfurt Arena	773	774	NS	0	0	0	0	0	0	0	0	0	0
+1145535	2024-06-26 19:00:00+00	Volksparkstadion	770	777	NS	0	0	0	0	0	0	0	0	0	0
+1189846	2024-06-16 13:00:00+00	Volksparkstadion	24	1118	NS	0	0	0	0	0	0	0	0	0	0
+1189847	2024-06-17 13:00:00+00	Fußball Arena München	774	772	NS	0	0	0	0	0	0	0	0	0	0
+1189848	2024-06-18 16:00:00+00	BVB Stadion Dortmund	777	1104	NS	0	0	0	0	0	0	0	0	0	0
+1189849	2024-06-21 13:00:00+00	Düsseldorf Arena	773	772	NS	0	0	0	0	0	0	0	0	0	0
+1189850	2024-06-21 16:00:00+00	Olympiastadion Berlin	24	775	NS	0	0	0	0	0	0	0	0	0	0
+1189851	2024-06-22 13:00:00+00	Volksparkstadion	1104	770	NS	0	0	0	0	0	0	0	0	0	0
+1189852	2024-06-25 16:00:00+00	BVB Stadion Dortmund	2	24	NS	0	0	0	0	0	0	0	0	0	0
+1189853	2024-06-26 16:00:00+00	Stuttgart Arena	772	1	NS	0	0	0	0	0	0	0	0	0	0
+1189854	2024-06-26 19:00:00+00	Arena AufSchalke	1104	27	NS	0	0	0	0	0	0	0	0	0	0
 \.
 
 
@@ -231,6 +386,58 @@ ALTER TABLE ONLY public.locales
 
 ALTER TABLE ONLY public.teams
     ADD CONSTRAINT teams_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fixtures fixtures_before_insert; Type: TRIGGER; Schema: public; Owner: group77
+--
+
+CREATE TRIGGER fixtures_before_insert BEFORE INSERT ON public.fixtures FOR EACH ROW EXECUTE FUNCTION public.force_fixtures_defaults();
+
+
+--
+-- Name: groups groups_before_insert; Type: TRIGGER; Schema: public; Owner: group77
+--
+
+CREATE TRIGGER groups_before_insert BEFORE INSERT ON public.groups FOR EACH ROW EXECUTE FUNCTION public.force_groups_defaults();
+
+
+--
+-- Name: locales locales_before_insert; Type: TRIGGER; Schema: public; Owner: group77
+--
+
+CREATE TRIGGER locales_before_insert BEFORE INSERT ON public.locales FOR EACH ROW EXECUTE FUNCTION public.force_locales_defaults();
+
+
+--
+-- Name: teams teams_before_insert; Type: TRIGGER; Schema: public; Owner: group77
+--
+
+CREATE TRIGGER teams_before_insert BEFORE INSERT ON public.teams FOR EACH ROW EXECUTE FUNCTION public.force_teams_defaults();
+
+
+--
+-- Name: fixtures fixtures_away_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: group77
+--
+
+ALTER TABLE ONLY public.fixtures
+    ADD CONSTRAINT fixtures_away_id_fkey FOREIGN KEY (away_id) REFERENCES public.teams(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: fixtures fixtures_home_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: group77
+--
+
+ALTER TABLE ONLY public.fixtures
+    ADD CONSTRAINT fixtures_home_id_fkey FOREIGN KEY (home_id) REFERENCES public.teams(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: teams teams_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: group77
+--
+
+ALTER TABLE ONLY public.teams
+    ADD CONSTRAINT teams_group_id_fkey FOREIGN KEY (group_id) REFERENCES public.groups(id) ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED;
 
 
 --
