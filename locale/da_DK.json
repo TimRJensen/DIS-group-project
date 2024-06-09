@@ -20,6 +20,10 @@
             "5": "Seneste kampe",
             "06": "Juni",
             "07": "Juli"
+        }, 
+        "search": {
+            "06": "Juni",
+            "07": "Juli"
         }
     },
     "navbar": {

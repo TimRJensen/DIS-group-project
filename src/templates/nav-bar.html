@@ -6,8 +6,8 @@
         <a class="link" href="/fixtures">{{text["2"]}}</a>
     </div>
     <div class="controlbox">
-        <form class="form">
-            <input type="text" />
+        <form class="form" action="/search" method="post">
+            <input name="query" type="text" formaction="/search"/>
         </form>
         <div class="locales" tabindex="-1">
             {% for row in locales %}

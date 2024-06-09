@@ -20,6 +20,10 @@
             "5": "Senaste matcher",
             "06": "Juni",
             "07": "Juli"
+        },
+        "search": {
+            "06": "Juni",
+            "07": "Juli"
         }
     },
     "navbar": {

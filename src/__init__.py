@@ -34,11 +34,13 @@ def create_app():
     from src.routes.groups import Groups
     from src.routes.fixtures import Fixtures
     from src.routes.teams import Teams
+    from src.routes.search import Search
     app.register_blueprint(Index)
     app.register_blueprint(Error)
     app.register_blueprint(Groups)
     app.register_blueprint(Fixtures)
     app.register_blueprint(Teams)
+    app.register_blueprint(Search)
 
     locales = None
     with con.cursor(row_factory=dict_row) as cursor:

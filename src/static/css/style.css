@@ -264,13 +264,15 @@ body {
 
 /* Groups & group specific */
 #groups.view .group,
-#group.view .group {
+#group.view .group,
+#search.view .fixtures {
     --logo-size: 32px;
     border-radius: 4px;
 }
 
 #groups.view .group div,
-#group.view .group div {
+#group.view .group div,
+#search.view .fixtures div {
     line-height: var(--logo-size);
     text-align: center;
 }
@@ -287,7 +289,8 @@ body {
 }
 
 #groups.view .group .logobox,
-#group.view .group .logobox {
+#group.view .group .logobox,
+#search.view .fixtures .logobox {
     position: relative;
     display: flex;
     justify-content: center;
@@ -296,7 +299,8 @@ body {
 }
 
 #groups.view .group .logobox::after,
-#group.view .group .logobox::after {
+#group.view .group .logobox::after,
+#search.view .fixtures .logobox::after {
     position: absolute;
     content: " ";
     width: var(--logo-size);
@@ -309,7 +313,8 @@ body {
     Most of the logoes from the API are 1/1 with padding on the top and bottom. So:
 */
 #groups.view .group .logo,
-#group.view .group .logo {
+#group.view .group .logo,
+#search.view .fixtures .logo {
     height: var(--logo-size);
     aspect-ratio: 1.65/1;
     object-fit: cover;
@@ -317,14 +322,17 @@ body {
 
 #groups.view .group .logo[data-ignore="15"],
 #group.view .group .logo[data-ignore="15"],
+#search.view .fixtures .logo[data-ignore="15"],
 #groups.view .group .logo[data-ignore="1104"],
-#group.view .group .logo[data-ignore="1104"]  { /* Ignore Switzerland, Georgia */
+#group.view .group .logo[data-ignore="1104"],
+#search.view .fixtures .logo[data-ignore="1104"] { /* Ignore Switzerland, Georgia */
     aspect-ratio: 1/1;
     object-fit: unset;
 }
 
 #groups.view .group .team,
-#group.view .group .team  {
+#group.view .group .team,
+#search.view .fixtures .team {
     text-align: left;
 }
 
@@ -439,4 +447,3 @@ summary {
 summary:hover {
     background-color: #BFEA7C;
 }
-

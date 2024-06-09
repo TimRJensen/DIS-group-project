@@ -1,0 +1,34 @@
+{% extends "base.html" %} 
+{% set text = locale["views"]["search"] %}
+{% set teams = locale["teams"]["name"] %}
+{% block title %}
+<title>Search</title>
+{% endblock title %} 
+{% block head %} 
+<link rel="stylesheet" href="/static/css/search.css" />
+{% endblock %}
+{% block content %} 
+<section id="search" class="view">
+    <div class="fixtures">
+        {% for row in data %}
+            <hr>
+            <a href="/fixtures/{{row['fixture_id']}}">
+                <div class="row">
+                    <div class="date">{{row["date"].strftime("%d")}} {{text[row["date"].strftime("%m")]}} {{row["date"].strftime("%H:%M")}}</div>
+                    <div class="logobox">
+                        <img class="logo" src="{{row['home_logo']}}" data-ignore="{{row['home_id']}}"/>
+                    </div>
+                    <div class="logobox">
+                        <img class="logo" src="{{row['away_logo']}}" data-ignore="{{row['away_id']}}"/>
+                    </div>
+                    <div class="team home">{{teams[row["home_id"]|string]}}</div>
+                    <div></div>
+                    <div>vs.</div>
+                    <div></div>
+                    <div class="team">{{teams[row["away_id"]|string]}}</div>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
