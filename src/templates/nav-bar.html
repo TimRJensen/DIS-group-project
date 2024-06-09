@@ -1,9 +1,9 @@
 {% set text = locale["navbar"] %}
 <section id="nav-bar">
     <div class="linkbox">
+        <a class="link" href="/">{{text["2"]}}</a>
         <a class="link" href="/teams">{{text["0"]}}</a>
         <a class="link" href="/groups">{{text["1"]}}</a>
-        <a class="link" href="/fixtures">{{text["2"]}}</a>
     </div>
     <div class="controlbox">
         <form class="form">
@@ -63,7 +63,7 @@
     })
 
     const tokens = document.location.pathname.split("/")
-    const routes = ["teams", "groups", "fixtures"]
+    const routes = ["teams", "groups", ""]
 
     for (const route of routes) {
         if (route != tokens[1]) {
