@@ -132,3 +132,7 @@ python run.py
 python3 run.py
 ```
 Then navigate to [localhost:5000](http://localhost:5000). 
+
+## E/R Diagram
+![er](https://github.com/TimRJensen/dis-group-project/assets/23018442/dbfb3fe9-8d92-4e71-bd44-89ee1cc2e789)
+
