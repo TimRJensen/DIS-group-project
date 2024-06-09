@@ -9,35 +9,31 @@
 {% block content %}
 <main>
     {% for team in teams %}
-        <div class="teams container col">
-            <div class="teams row end">
-                <div class="teams box">
-                    <p class="teams label">C</p>
-                    <p class="teams label">R</p>
-                    <p class="teams label">P</p>
-                    <p class="teams label">W</p>
-                    <p class="teams label">L</p>
-                    <p class="teams label">D</p>
-                    <p class="teams label">G</p>
+        <div class="teams container">
+            <div class="teams box">
+                <div class="teams empty"></div>
+                <p class="teams empty"></p>
+                <p class="teams label">C</p>
+                <p class="teams label">R</p>
+                <p class="teams label">P</p>
+                <p class="teams label">W</p>
+                <p class="teams label">L</p>
+                <p class="teams label">D</p>
+                <p class="teams label">G</p>
+            </div>
+            <div class="teams box">
+                <div class="teams logo-container">
+                    <img class="teams logo" src="{{ team.logo }}"/>
                 </div>
-            </div>    
-            <div class="teams row">
-                    <div class="teams box">
-                        <div class="teams logo-container">
-                            <img class="teams logo" src="{{ team.logo }}"/>
-                        </div>
-                        <p class="teams label">{{ team.name }}</p>
-                    </div>
-                    <div class="teams box">
-                        <p class="teams label">{{ team.code }}</p>
-                        <p class="teams label">{{ team.rank }}</p>
-                        <p class="teams label">{{ team.points }}</p>
-                        <p class="teams label">{{ team.wins }}</p>
-                        <p class="teams label">{{ team.loses }}</p>
-                        <p class="teams label">{{ team.draws }}</p>
-                        <p class="teams label">{{ team.group_id }}</p>
-                    </div>
-                </div>
+                <p class="teams label">{{ team.name }}</p>
+                <p class="teams label">{{ team.code }}</p>
+                <p class="teams label">{{ team.rank }}</p>
+                <p class="teams label">{{ team.points }}</p>
+                <p class="teams label">{{ team.wins }}</p>
+                <p class="teams label">{{ team.loses }}</p>
+                <p class="teams label">{{ team.draws }}</p>
+                <p class="teams label">{{ team.group_id }}</p>
+            </div>
         </div>
     {% endfor %}
 </main>

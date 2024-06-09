@@ -12,42 +12,33 @@
     margin: 1rem 0;
     background-color: #f9f9f9;
     border-color: blue;
-    display: flex;
     margin-left: auto;
     margin-right: auto;
     max-width: 600px;
+
+    display: grid;
+    grid-template-rows: 1fr 1fr;
 }
-.teams.col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-.teams.row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
+.teams.box {
+    display: grid;
+    grid-template-columns: 2fr 3fr repeat(7, 1fr);
 }
 
-.teams.row.end {
-    justify-content: flex-end;
-}
-
-.teams.container .box {
-    display: flex;
-    justify-content: space-between;
-}
 
 
 .teams.label {
     margin: 0 1rem;
     color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
+    align-self: center;
+    justify-self: center;
 }
+
+.teams.box p:nth-of-type(1) {
+    justify-self: left;
+    font-weight: bold;
+}
+
+
 
 
 
