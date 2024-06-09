@@ -130,7 +130,7 @@ Running the application dockerless assumes:
 - Root password is "postgres"
 - Server port is 5432
 
-If you followed the initialization steps under installation up untill running Docker, you can run these command to start the web server:
+If you followed the initialization steps under installation up untill running Docker, you can run these commands to start the web server:
 #####  Windows:
 ```
 python -m venv .venv
