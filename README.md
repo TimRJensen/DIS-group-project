@@ -5,9 +5,10 @@ Repository for the group project in the course [Databases and Information System
  - [Setup](#Setup)
 	 - [Requirements](#Requirements)
 	 - [Installation](#Installation) 
+	 - [Initialization](#Initialization) 
 	 - [Docker without Docker Desktop](#DockerwithoutDockerDesktop)
  - [Development](#Development)
-	 - [Initialization](#Initialization) 
+	 - [Dependencies](#Dependencies)
 	 - [Populating the database](#Populatingthedatabase)
 	 - [PGAdmin](#PGAdmin) 
 	 - [Developing](#Developing)
@@ -34,42 +35,54 @@ python3 "--version"
 pip --version
 docker --version
 ```
-### Docker without Docker Desktop
-Without Docker Desktop you'll need to install the Docker engine manually. You can follow one of [these](https://docs.docker.com/engine/install/) guides. Also remember to perform the [post installation](https://docs.docker.com/engine/install/linux-postinstall/) steps.
-## Development
 ### Initialization
 #####  Windows:
 ```
 git clone git@github.com:TimRJensen/dis-group-project.git
 cd dis-group-project
+mkdir src\secrets
+python -c "import secrets;print(secrets.token_hex())" > src\secrets\flask-key
 docker compose up -d
-python -m venv .venv
-.venv\Scripts\activate.bat
-pip install -r requirements.txt
 ```
 #####  Linux/ubunto:
 ```
 git clone git@github.com:TimRJensen/dis-group-project.git
 cd dis-group-project
+mkdir src/secrets
+python3 -c "import secrets;print(secrets.token_hex())" > src/secrets/flask-key
 docker compose up -d
-python3 -m venv .venv
-. .venv/bin/activate
-pip install -r requirements.txt
 ```
 Confirm that the database is running with the following command:
 ```
 docker exec postgres psql -U group77 -d uefa2024 -V
 ```
 Confirm that the Flask server is running by navigating to [localhost:1234](http://localhost:1234?greet=name).
+### Docker without Docker Desktop
+Without Docker Desktop you'll need to install the Docker engine manually. You can follow one of [these](https://docs.docker.com/engine/install/) guides. Also remember to perform the [post installation](https://docs.docker.com/engine/install/linux-postinstall/) steps.
+## Development
+### Dependencies
+Start by installing the application dependencies as a virtual environment:
+#####  Windows:
+```
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
+```
+#####  Linux/ubunto:
+```
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+```
 ### Populating the database
 You should not need this step, but I include it for the sake of completeness.
 ##### Windows:
 ```
-python scripts/datamanager.py populate
+./bin/dm.exe populate
 ```
 ##### Linux/ubunto:
 ```
-python3 scripts/datamanager.py populate
+./bin/dm populate
 ```
 You only need to do this whenever the schema for the database changes. Besides populating the database, this script can also generate the current schema and restore the database from a backup. Run the script with the `--help` flag for more information.
 ### PGAdmin
@@ -83,7 +96,7 @@ To connect to the database, rightclick Servers in the top left corner and select
 - **Maintenance database**: uefa2024
 - **Password**: dis2024
 
-Hit save and you're done. From tools you can try to select Query Tool and run some SQL commands against the database.
+Hit save and you're done. From tools you can try to select Query Tool and run some SQL queries against the database.
 ### Developing
 Start the application services when you start developing:
 #####  Windows/Linux/ubunto:
@@ -97,28 +110,23 @@ To stop the services press ctrl+c in the terminal where the services are running
 
 ## Running
 ### With Docker
-If you followed the setup section, you can start the application services with these commands:
-#####  Windows/Linux/ubunto:
-```
-docker compose up -d
-```
-Then navigate to [localhost:1234](http://localhost:1234).
+If you followed the initialization steps under installation, the web server should already be running at [localhost:1234](http://localhost:1234).
 
 ### Dockerless
 > [!IMPORTANT]
 > Running the application dockerless adds user "group77" and database "uefa2024" to your local PostgreSQL server.
 
 Running the application dockerless assumes:
-- A local PostgreSQL installation.
+- A local PostgreSQL server.
 - Root user is "postgres"
 - Root password is "postgres"
 - Server port is 5432
 
-Start the web server with:
+If you followed the initialization steps under installation up untill running Docker, you can run this command to start the web server:
 #####  Windows:
 ```
 python run.py
-``` 
+```
 #####  Linux/ubunto:
 ```
 python3 run.py
