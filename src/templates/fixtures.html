@@ -38,11 +38,7 @@
         var element = document.getElementById('fixture-' + '{{ scroll_to_id }}');
         if (element) {
             element.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-            setTimeout(function() {
-                window.scrollBy(0, -125); // Adjust landing screen upwards
-            }, 0);
+            element.scrollIntoView({ behavior: 'smooth', block: 'end' });
         }
     });
 </script>
