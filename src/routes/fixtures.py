@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
+from dateutil import tz
 from flask import Blueprint, render_template
 from dataclasses import dataclass
 from psycopg.rows import class_row
@@ -17,9 +18,10 @@ class Fixture:
     away_name: str
     away_logo: str
 
-Fixtures = Blueprint("fixtures", __name__, url_prefix="/fixtures")
+Fixtures = Blueprint("fixtures", __name__, url_prefix="/")
 
 @Fixtures.get("/")
+@Fixtures.get("/index")
 def fixtures():
     fixtures_by_date = defaultdict(list)
     with con.cursor(row_factory=class_row(Fixture)) as cursor:
@@ -40,6 +42,8 @@ def fixtures():
             ORDER BY f.date;
         """)
         fixtures = cursor.fetchall()
+        from_zone = tz.tzutc()
+        to_zone = tz.gettz("CET")
         for fixture in fixtures:
             fixture_data = {
                 "id": fixture.id,
@@ -52,7 +56,9 @@ def fixtures():
                 "away_name": fixture.away_name,
                 "away_logo": fixture.away_logo
             }
-            date_str = fixture.date.strftime("%Y-%m-%d")
+            fixture_data["date"] = fixture.date.replace(tzinfo=from_zone)
+            fixture_data["date"] = fixture.date.astimezone(to_zone)
+            date_str = fixture_data["date"].strftime("%Y-%m-%d")
             fixtures_by_date[date_str].append(fixture_data)
 
     return render_template("fixtures.html", fixtures_by_date=fixtures_by_date)
