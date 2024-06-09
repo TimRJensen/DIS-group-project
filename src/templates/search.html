@@ -12,7 +12,7 @@
     <div class="fixtures">
         {% for row in data %}
             <hr>
-            <a href="/fixtures/{{row['fixture_id']}}">
+            <a href="/fixtures/{{row['id']}}">
                 <div class="row">
                     <div class="date">{{row["date"].strftime("%d")}} {{text[row["date"].strftime("%m")]}} {{row["date"].strftime("%H:%M")}}</div>
                     <div class="logobox">

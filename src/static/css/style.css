@@ -343,6 +343,7 @@ body {
     #nav-bar .linkbox:has(~ .burger.button[data-toggled=true]) {width: unset;}
     #groups.view .group {border: 2px solid var(--color-secondary);}
     #group.view .group {border: 2px solid var(--color-secondary);}
+    #search.view .fixtures {border: 2px solid var(--color-secondary);}
 }
 
 
