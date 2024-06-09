@@ -9,12 +9,12 @@ Repository for the group project in the course [Databases and Information System
 	 - [Docker without Docker Desktop](#DockerwithoutDockerDesktop)
  - [Development](#Development)
 	 - [Dependencies](#Dependencies)
-	 - [Populating the database](#Populatingthedatabase)
+	 - [Populating the database](#populating-the-database)
 	 - [PGAdmin](#PGAdmin) 
 	 - [Developing](#Developing)
 	 - [Guidelines](#Guidelines)
  - [Running](#Running)
- - [E/R Diagram](#E/RDiagram)
+ - [E/R Diagram](#er-diagram)
 
 ## Setup
 ### Requirements
