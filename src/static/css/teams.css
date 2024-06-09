@@ -1,6 +1,7 @@
-/* Fixtures specifics */
+/* Custom variable for team */
 .teams {
     --logo-size: 5rem;
+    --logo-box-size: 3rem;
 }
 
 
@@ -21,30 +22,26 @@
 }
 .teams.box {
     display: grid;
-    grid-template-columns: 2fr 3fr repeat(7, 1fr);
+    grid-template-columns: 2fr 5fr repeat(6, 1fr);
 }
 
-
-
 .teams.label {
-    margin: 0 1rem;
     color: #555;
     align-self: center;
     justify-self: center;
 }
 
-.teams.box p:nth-of-type(1) {
+/* country name */
+.teams.box p:nth-of-type(1) {  
     justify-self: left;
     font-weight: bold;
+    margin: 0;
 }
 
 
-
-
-
 .teams.logo-container {
-    height: 3rem;
-    height: 3rem;
+    height: var(--logo-box-size);
+    height: var(--logo-box-size);
     aspect-ratio: 1.65/1;
 
     background-size: cover;
