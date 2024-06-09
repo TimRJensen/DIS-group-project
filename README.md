@@ -14,7 +14,7 @@ Repository for the group project in the course [Databases and Information System
 	 - [Developing](#Developing)
 	 - [Guidelines](#Guidelines)
  - [Running](#Running)
- - [E/R Diagram](#E/R Diagram)
+ - [E/R Diagram](#E/RDiagram)
 
 ## Setup
 ### Requirements
