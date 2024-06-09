@@ -6,14 +6,15 @@ Repository for the group project in the course [Databases and Information System
 	 - [Requirements](#Requirements)
 	 - [Installation](#Installation) 
 	 - [Initialization](#Initialization) 
-	 - [Docker without Docker Desktop](#DockerwithoutDockerDesktop)
+	 - [Docker without Docker Desktop](#Docker-without-Docker-Desktop)
  - [Development](#Development)
 	 - [Dependencies](#Dependencies)
-	 - [Populating the database](#Populatingthedatabase)
+	 - [Populating the database](#populating-the-database)
 	 - [PGAdmin](#PGAdmin) 
 	 - [Developing](#Developing)
 	 - [Guidelines](#Guidelines)
  - [Running](#Running)
+ - [E/R Diagram](#er-diagram)
 
 ## Setup
 ### Requirements
@@ -132,3 +133,7 @@ python run.py
 python3 run.py
 ```
 Then navigate to [localhost:5000](http://localhost:5000). 
+
+## E/R Diagram
+![er](https://github.com/TimRJensen/dis-group-project/assets/23018442/dbfb3fe9-8d92-4e71-bd44-89ee1cc2e789)
+
