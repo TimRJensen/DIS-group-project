@@ -38,6 +38,8 @@ pip --version
 docker --version
 ```
 ### Initialization
+> [!NOTE]
+> The project comes with PGAdmin and that is not a lightweight container. For teachers and TAs a more suitable  `compose.prod.yaml` compose file has been provided which omits PGAdmin.
 #####  Windows:
 ```
 git clone git@github.com:TimRJensen/dis-group-project.git
@@ -45,6 +47,8 @@ cd dis-group-project
 mkdir src\secrets
 python -c "import secrets;print(secrets.token_hex())" > src\secrets\flask-key
 docker compose up -d
+# without PGAdmin
+docker compose -f compose.prod.yaml up -d
 ```
 #####  Linux/ubunto:
 ```
@@ -53,6 +57,8 @@ cd dis-group-project
 mkdir src/secrets
 python3 -c "import secrets;print(secrets.token_hex())" > src/secrets/flask-key
 docker compose up -d
+# without PGAdmin
+docker compose -f compose.prod.yaml up -d
 ```
 Confirm that the database is running with the following command:
 ```
