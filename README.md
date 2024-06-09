@@ -6,7 +6,7 @@ Repository for the group project in the course [Databases and Information System
 	 - [Requirements](#Requirements)
 	 - [Installation](#Installation) 
 	 - [Initialization](#Initialization) 
-	 - [Docker without Docker Desktop](#DockerwithoutDockerDesktop)
+	 - [Docker without Docker Desktop](#Docker-without-Docker-Desktop)
  - [Development](#Development)
 	 - [Dependencies](#Dependencies)
 	 - [Populating the database](#populating-the-database)
