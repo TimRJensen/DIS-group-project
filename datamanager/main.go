@@ -66,21 +66,16 @@ func backup(args map[string]interface{}) error {
 }
 
 func dump(args map[string]interface{}) error {
-	c, u, d, o, t :=
+	c, u, d, o :=
 		args["-c"].(string),
 		args["-u"].(string),
 		args["-d"].(string),
-		args["-o"].(string),
-		args["-t"].(string)
+		args["-o"].(string)
 
-	cmd := exec.Command("docker", "exec", c, "pg_dump", "-U", u, "-d", d, "-t", t, "-c", "--if-exists")
+	cmd := exec.Command("docker", "exec", c, "pg_dump", "-U", u, "-d", d, "-c", "--if-exists")
 	output, err := cmd.Output()
 	if err != nil {
-		if t == "public.*" {
-			fmt.Printf("exiting: failed to dump \"%s\"\n", d)
-		} else {
-			fmt.Printf("exiting: failed to dump \"%s\"\n", t)
-		}
+		fmt.Printf("exiting: failed to dump \"%s\"\n", d)
 		return err
 	}
 
@@ -102,11 +97,7 @@ func dump(args map[string]interface{}) error {
 	defer out.Close()
 	out.Write(output)
 
-	if t == "public.*" {
-		fmt.Printf("succesfully dumped \"%s\" to \"%s\"\n", d, path)
-	} else {
-		fmt.Printf("succesfully dumped \"%s\" to \"%s\"\n", t, path)
-	}
+	fmt.Printf("succesfully dumped \"%s\" to \"%s\"\n", d, path)
 	return nil
 }
 
@@ -206,12 +197,11 @@ var closeContent string
 func main() {
 	command := ""
 	args := map[string]interface{}{
-		"-c":  "postgres",
-		"-u":  "group77",
-		"-d":  "uefa2024",
+		"-c":  os.Getenv("DB"),
+		"-u":  os.Getenv("POSTGRES_USER"),
+		"-d":  os.Getenv("POSTGRES_DB"),
 		"-f":  "",
 		"-o":  "schema/schema.sql",
-		"-t":  "public.*",
 		"-ls": false,
 	}
 

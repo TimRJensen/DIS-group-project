@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv(".env")
 
 locale = None
-con = None
+con:Connection = None
 con_config = {
     "host": os.getenv("POSTGRES_HOST"),
     "port":os.getenv("POSTGRES_PORT"),

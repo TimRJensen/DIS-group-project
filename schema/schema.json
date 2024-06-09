@@ -185,7 +185,7 @@
             },
             {
                 "name": "date",
-                "type": "TIMESTAMP",
+                "type": "TIMESTAMPTZ",
                 "api-key": "fixtures:fixture:date",
                 "primary-key": false,
                 "local-key": "",
