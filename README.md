@@ -133,10 +133,16 @@ Running the application dockerless assumes:
 If you followed the initialization steps under installation up untill running Docker, you can run this command to start the web server:
 #####  Windows:
 ```
+python -m venv .venv
+.venv\Scripts\activate.bat
+pip install -r requirements.txt
 python run.py
 ```
 #####  Linux/ubunto:
 ```
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
 python3 run.py
 ```
 Then navigate to [localhost:5000](http://localhost:5000). 
