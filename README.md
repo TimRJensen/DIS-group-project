@@ -86,7 +86,7 @@ pip install -r requirements.txt
 You should not need this step, but I include it for the sake of completeness.
 ##### Windows:
 ```
-./bin/dm.exe populate
+bin\dm.exe populate
 ```
 ##### Linux/ubunto:
 ```
