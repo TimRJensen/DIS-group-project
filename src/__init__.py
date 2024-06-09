@@ -29,13 +29,11 @@ def create_app():
     with open(os.getenv("FLASK_SECRET_PATH"), "r") as file:
         app.secret_key = file.read().strip()
 
-    from src.routes.index import Index
     from src.routes.error import Error
     from src.routes.groups import Groups
     from src.routes.fixtures import Fixtures
     from src.routes.teams import Teams
     from src.routes.search import Search
-    app.register_blueprint(Index)
     app.register_blueprint(Error)
     app.register_blueprint(Groups)
     app.register_blueprint(Fixtures)

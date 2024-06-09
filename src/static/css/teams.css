@@ -1,6 +1,7 @@
-/* Fixtures specifics */
+/* Custom variable for team */
 .teams {
     --logo-size: 5rem;
+    --logo-box-size: 3rem;
 }
 
 
@@ -12,48 +13,35 @@
     margin: 1rem 0;
     background-color: #f9f9f9;
     border-color: blue;
-    display: flex;
     margin-left: auto;
     margin-right: auto;
     max-width: 600px;
-}
-.teams.col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-.teams.row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-}
 
-.teams.row.end {
-    justify-content: flex-end;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
 }
-
-.teams.container .box {
-    display: flex;
-    justify-content: space-between;
+.teams.box {
+    display: grid;
+    grid-template-columns: 2fr 5fr repeat(6, 1fr);
 }
-
 
 .teams.label {
-    margin: 0 1rem;
     color: #555;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
+    align-self: center;
+    justify-self: center;
 }
 
+/* country name */
+.teams.box p:nth-of-type(1) {  
+    justify-self: left;
+    font-weight: bold;
+    margin: 0;
+}
 
 
 .teams.logo-container {
-    height: 3rem;
-    height: 3rem;
+    height: var(--logo-box-size);
+    height: var(--logo-box-size);
     aspect-ratio: 1.65/1;
 
     background-size: cover;

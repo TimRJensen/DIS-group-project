@@ -12,7 +12,7 @@
             <summary class="date-header">{{ date }}</summary>
             <div class="fixtures-group">
                 {% for fixture in fixtures %}
-                    <div class="fixture-box">
+                    <div class="fixture-box" id="fixture-{{ fixture.id }}">
                         <div class="teams">
                             <a href="/teams/{{ fixture.home_id }}" class="team">
                                 <img src="{{ fixture.home_logo }}" alt="{{ fixture.home_name }} flag" class="team-flag">
@@ -32,4 +32,15 @@
         </details>
     {% endfor %}
 </main>
+{% if scroll_to_id %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var element = document.getElementById('fixture-' + '{{ scroll_to_id }}');
+        if (element) {
+            element.style.backgroundColor = 'rgba(255, 255, 0, 0.3)';
+            element.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        }
+    });
+</script>
+{% endif %}
 {% endblock %}
