@@ -1,0 +1,57 @@
+name: dis
+services:
+  postgres:
+    container_name: ${DB}
+    image: postgres:latest
+    env_file: .env 
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+      - backups:/backups
+      - ./schema/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 30s
+      retries: 3
+    ports:
+      - "5454:${POSTGRES_PORT}"
+    networks:
+      - back-end
+
+  web:
+    container_name: ${WEB}
+    build:
+      context: .
+      dockerfile: .docker/flask.Dockerfile
+    secrets:
+      - flask-key
+    env_file: .env
+    environment:
+      FLASK_SECRET_PATH: /run/secrets/flask-key 
+    ports:
+      - "${FLASK_RUN_PORT}:${FLASK_RUN_PORT}"
+    develop:
+      watch:
+        - action: sync
+          path: ./src
+          target: /app/src
+        - action: rebuild
+          path: requirements.txt
+    stop_signal: SIGINT
+    networks:
+      - back-end
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  data:
+  backups:
+
+networks:
+  back-end:
+
+secrets:
+  flask-key:
+    file: src/secrets/flask-key
